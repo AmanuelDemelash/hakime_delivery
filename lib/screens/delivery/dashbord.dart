@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hakime_delivery/apiservice/mymutation.dart';
@@ -9,7 +8,6 @@ import 'package:hakime_delivery/controllers/splashcontroller.dart';
 import 'package:hakime_delivery/utils/constants.dart';
 import 'package:hakime_delivery/widgets/cool_loading.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:shimmer/shimmer.dart';
 
 class Dashbord extends StatelessWidget {
   const Dashbord({super.key});
