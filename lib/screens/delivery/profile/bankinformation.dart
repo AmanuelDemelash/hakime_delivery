@@ -12,12 +12,12 @@ class Bankinformation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Constants.whitesmoke,
+        backgroundColor: Constants.primcolor,
         elevation: 0,
         automaticallyImplyLeading: false,
         title: const Text(
           "My Bank information",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
         leading: IconButton(
             onPressed: () {
@@ -25,27 +25,30 @@ class Bankinformation extends StatelessWidget {
             },
             icon: const FaIcon(
               FontAwesomeIcons.angleLeft,
-              color: Colors.black,
+              color: Colors.white,
             )),
       ),
       floatingActionButton: FloatingActionButton(
-        child: FaIcon(
-          FontAwesomeIcons.add,
-          color: Colors.white,
-        ),
         tooltip: "Add bank info",
         onPressed: () async {
           Get.toNamed("/addbank");
         },
+        child:const FaIcon(
+          FontAwesomeIcons.add,
+          color: Colors.white,
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: () async {},
         color: Constants.primcolor,
-        child: ListView.builder(
-          itemCount: 3,
-          itemBuilder: (context, index) {
-            return bankinfo_card();
-          },
+        child: Padding(
+          padding: const EdgeInsets.only(top:25),
+          child: ListView.builder(
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return bankinfo_card();
+            },
+          ),
         ),
       ),
     );

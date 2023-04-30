@@ -8,7 +8,7 @@ import 'package:hakime_delivery/screens/delivery/activeorderdetail.dart';
 import 'package:hakime_delivery/screens/delivery/complateorder.dart';
 import 'package:hakime_delivery/screens/delivery/profile/bankinformation.dart';
 import 'package:hakime_delivery/screens/delivery/profile/wallet.dart';
-import 'package:hakime_delivery/screens/delivery/profile/widget/addbankinfo.dart';
+import 'package:hakime_delivery/screens/delivery/profile/addbankinfo.dart';
 import 'package:hakime_delivery/translations/apptranslations.dart';
 import 'package:hakime_delivery/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';

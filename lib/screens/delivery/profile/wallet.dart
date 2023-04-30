@@ -3,7 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hakime_delivery/apiservice/myquery.dart';
+import 'package:hakime_delivery/controllers/splashcontroller.dart';
 import 'package:hakime_delivery/utils/constants.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Wallet extends StatelessWidget {
   const Wallet({super.key});
@@ -35,7 +39,34 @@ class Wallet extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            Row(
+          Query(options: QueryOptions(document: gql(Myquery.delivery_wallet),
+          variables: {
+            "id":Get.find<SplashController>().prefs.getInt("id")
+          }
+          ), builder:(result, {fetchMore, refetch}) {
+            if(result.hasException){
+              print(result.exception.toString());
+            }
+            if(result.isLoading){
+              return Shimmer.fromColors(
+                baseColor: Colors.grey.shade200,
+                highlightColor: Colors.white,
+                child: Container(
+                  width: Get.width,
+                  margin:const EdgeInsets.all(15),
+                  height: 230,
+                  decoration:BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15)
+
+                  ),
+                ),
+              );
+            }
+
+            Map<String,dynamic> delvery_wallet=result.data!["deliverers_by_pk"];
+
+            return Row(
               children: [
                 Container(
                   width: 10,
@@ -91,9 +122,9 @@ class Wallet extends StatelessWidget {
                               const SizedBox(
                                 height: 10,
                               ),
-                              const Text(
-                                "ETB 4000",
-                                style: TextStyle(
+                              Text(
+                                "ETB ${delvery_wallet["wallet"]}",
+                                style:const TextStyle(
                                     color: Colors.white, fontSize: 30),
                               ),
                             ],
@@ -110,27 +141,32 @@ class Wallet extends StatelessWidget {
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
+                                children:[
+                                 const  Text(
                                     "Holder Name",
                                     style: TextStyle(color: Colors.white54),
                                   ),
-                                  Text(
+                                  delvery_wallet["bank_info"]==null?const Text(""): const Text(
                                     "Amanuel demelash",
                                     style: TextStyle(color: Colors.white),
                                   )
                                 ],
                               ),
-                            // cash out
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                backgroundColor: Constants.primcolor.withOpacity(0.5)
-                              ),
-                                onPressed:() {
+                              // cash out
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      backgroundColor: Constants.primcolor.withOpacity(0.5)
+                                  ),
+                                  onPressed:() {
+                                    delvery_wallet["bank_info"]==null?Get.toNamed("/bankinformation"):Get.bottomSheet(BottomSheet(onClosing:() {
 
-                            }, child:const Text("Cash Out"))
-                              
+                                    }, builder:(context) {
+                                      return Container();
+                                    },));
+
+                                  }, child: delvery_wallet["bank_info"]==null?const Text("Add Bank info")  :const Text("Cash Out"))
+
                             ],
                           ),
                         )
@@ -148,7 +184,9 @@ class Wallet extends StatelessWidget {
                       color: Constants.primcolor),
                 ),
               ],
-            ),
+            );
+          },)
+            ,
             const SizedBox(
               height: 20,
             ),

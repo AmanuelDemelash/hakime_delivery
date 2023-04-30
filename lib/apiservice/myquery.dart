@@ -41,9 +41,18 @@ query(\$id:Int!){
     }
   }
 }
-
- 
- 
  """;
 
+ // wallet page
+
+static String delivery_wallet="""
+query(\$id:Int!){
+  deliverers_by_pk(id:\$id) {
+    wallet
+    bank_info {
+      full_name
+    }
+  }
+}
+""";
 }

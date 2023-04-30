@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import '../../../../utils/constants.dart';
+import '../../../utils/constants.dart';
 
 class AddBankInformation extends StatelessWidget {
   AddBankInformation({super.key});
@@ -16,12 +16,12 @@ class AddBankInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Constants.whitesmoke,
+          backgroundColor: Constants.primcolor,
           elevation: 0,
           automaticallyImplyLeading: false,
           title: const Text(
             "Add Bank information",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.white),
           ),
           leading: IconButton(
               onPressed: () {
@@ -29,22 +29,27 @@ class AddBankInformation extends StatelessWidget {
               },
               icon: const FaIcon(
                 FontAwesomeIcons.angleLeft,
-                color: Colors.black,
+                color: Colors.white,
               )),
         ),
         body: Container(
           width: Get.width,
           decoration: const BoxDecoration(),
           child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(15),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 10,
+                  height:20,
                 ),
                 const Text(
-                  "Provide your Bank Information!",
-                  style: TextStyle(fontSize: 20, color: Colors.black54),
+                  "Add Bank Information!",
+                  style: TextStyle(fontSize: 18, color: Colors.black54),
+                ),
+                const Text(
+                  "to make withdrawals from your account",
+                  style: TextStyle( color: Colors.black54),
                 ),
                 const SizedBox(
                   height: 25,
@@ -175,7 +180,7 @@ class AddBankInformation extends StatelessWidget {
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              // customsnack("add bank holder name");
+                              //customsnack("add bank holder name");
                             } else {
                               return null;
                             }
@@ -219,6 +224,7 @@ class AddBankInformation extends StatelessWidget {
                                     padding: const EdgeInsets.all(17)),
                                 onPressed: () {
                                   _formkey.currentState!.save();
+
                                 },
                                 child: const Text("Save")),
                           ),
