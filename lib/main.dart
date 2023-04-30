@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hakime_delivery/screens/auth/changepassword.dart';
 import 'package:hakime_delivery/screens/delivery/activeorderdetail.dart';
 import 'package:hakime_delivery/screens/delivery/complateorder.dart';
 import 'package:hakime_delivery/screens/delivery/profile/bankinformation.dart';
@@ -115,6 +116,7 @@ class MyApp extends StatelessWidget {
           GetPage(name: "/wallet", page: () => Wallet()),
           GetPage(name: "/bankinformation", page: () => Bankinformation()),
           GetPage(name: "/addbank", page: () => AddBankInformation()),
+          GetPage(name: "/changepassword", page: () => ChangePassword()),
 
           // both screen
           GetPage(name: "/setting", page: () => Setting()),

@@ -207,12 +207,21 @@ class Login extends StatelessWidget {
 
                               Get.find<LoginController>().is_loging.value =
                                   false;
+
+                              if(data["delivererlogin"]["is_change"]==false){
+                                Get.toNamed("/changepassword");
+                              }else{
+                                Get.offAllNamed("/mainhomepage");
+                              }
                               Get.offAllNamed("/mainhomepage");
+
                             } else {}
                           },
                         ),
                         builder: (runMutation, result) {
-                          if (result!.hasException) {}
+                          if (result!.hasException) {
+                            customsnack(result.exception.toString());
+                          }
                           if (result.isLoading) {
                             Get.find<LoginController>().is_loging.value = true;
                           }
