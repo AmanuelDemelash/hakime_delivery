@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hakime_delivery/apiservice/myquery.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../controllers/splashcontroller.dart';
-import '../../../utils/constants.dart';
 
 class Myprofile extends StatelessWidget {
   Myprofile({super.key});
@@ -15,6 +17,7 @@ class Myprofile extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
+            // profile
             Container(
               width: Get.width,
               height: 200,
@@ -22,49 +25,90 @@ class Myprofile extends StatelessWidget {
                   color: Colors.white,
                   borderRadius:
                       BorderRadius.only(bottomRight: Radius.circular(100))),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Stack(children: [
-                    CircleAvatar(
-                        radius: 60,
-                        backgroundImage: AssetImage("assets/images/user.png")
-                            as ImageProvider),
-                    Positioned(
-                      bottom: 5,
-                      right: 5,
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Constants.primcolor),
-                        child: Center(
-                          child: IconButton(
-                              onPressed: () {},
-                              icon: const FaIcon(
-                                FontAwesomeIcons.camera,
-                                color: Colors.white,
-                                size: 13,
-                              )),
-                        ),
-                      ),
-                    )
-                  ]),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    "Amanuel demelash",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const Text(
-                    "0965342345",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
+              child:
+             Query(
+               options:QueryOptions(document: gql(Myquery.delivery_profile_header),
+               variables: {
+                 "id":Get.find<SplashController>().prefs.getInt("id")
+               }
+               ) ,
+             builder:(result, {fetchMore, refetch}) {
+               if(result.hasException){
+                 print(result.exception.toString());
+               }
+               if(result.isLoading){
+                   return Column(
+                     children: [
+                       const SizedBox(height: 10,),
+
+                       Shimmer.fromColors(
+                         baseColor: Colors.grey.shade200,
+                         highlightColor: Colors.white,
+                         child: Container(
+                           width: 100,
+                           height: 110,
+                           decoration: const BoxDecoration(
+                               color: Colors.white,
+                             shape: BoxShape.circle
+                               ),
+                         ),
+                       ),
+                       const SizedBox(height: 10,),
+
+                       Shimmer.fromColors(
+                         baseColor: Colors.grey.shade200,
+                         highlightColor: Colors.white,
+                         child: Container(
+                           width: 120,
+                           height: 10,
+                           decoration: const BoxDecoration(
+                               color: Colors.white,
+
+                               ),
+                         ),
+                       ),
+                       const SizedBox(height: 6,),
+                       Shimmer.fromColors(
+                         baseColor: Colors.grey.shade200,
+                         highlightColor: Colors.white,
+                         child: Container(
+                           width: 80,
+                           height: 10,
+                           decoration: const BoxDecoration(
+                             color: Colors.white,
+
+                           ),
+                         ),
+                       ),
+                     ],
+                   );
+                 }
+               Map<String,dynamic> delivery=result.data!["deliverers_by_pk"];
+               
+               return  Column(
+                 children: [
+                   const SizedBox(
+                     height: 10,
+                   ),
+                   CircleAvatar(
+                       radius: 60,
+                       backgroundImage:NetworkImage(delivery["image"]["url"])),
+
+                   const SizedBox(
+                     height: 10,
+                   ),
+                    Text(
+                     delivery["full_name"],
+                     style:const TextStyle(fontWeight: FontWeight.bold),
+                   ),
+                    Text(
+                     delivery["phone_number"],
+                     style:const TextStyle(fontWeight: FontWeight.bold),
+                   ),
+                 ],
+               );
+             }
+             ),
             ),
             const SizedBox(
               height: 20,

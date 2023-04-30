@@ -47,7 +47,8 @@ class Wallet extends StatelessWidget {
                       color: Constants.primcolor),
                 ),
                 Expanded(
-                  child: Container(
+                  child:
+                  Container(
                     width: Get.width,
                     margin: const EdgeInsets.only(left: 10, right: 10),
                     decoration: BoxDecoration(
@@ -100,19 +101,36 @@ class Wallet extends StatelessWidget {
                         ),
                         Container(
                           width: Get.width,
+
                           padding: const EdgeInsets.only(
-                              left: 30, top: 5, bottom: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "Holder Name",
-                                style: TextStyle(color: Colors.white54),
+                              left: 30, top: 5, bottom: 10,right: 20),
+                          child:
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    "Holder Name",
+                                    style: TextStyle(color: Colors.white54),
+                                  ),
+                                  Text(
+                                    "Amanuel demelash",
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                ],
                               ),
-                              Text(
-                                "Amanuel demelash",
-                                style: TextStyle(color: Colors.white),
-                              )
+                            // cash out
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                backgroundColor: Constants.primcolor.withOpacity(0.5)
+                              ),
+                                onPressed:() {
+
+                            }, child:const Text("Cash Out"))
+                              
                             ],
                           ),
                         )
@@ -134,6 +152,7 @@ class Wallet extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
+
             // withdrawals pending
             Padding(
               padding: const EdgeInsets.all(8.0),

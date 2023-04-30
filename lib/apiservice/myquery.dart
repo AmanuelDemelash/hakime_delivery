@@ -29,5 +29,21 @@ query(\$id:Int!){
   }
 }
 """;
+  // profile heder
+
+ static String delivery_profile_header="""
+ query(\$id:Int!){
+  deliverers_by_pk(id:\$id) {
+    full_name
+    phone_number
+    image {
+      url
+    }
+  }
+}
+
+ 
+ 
+ """;
 
 }
