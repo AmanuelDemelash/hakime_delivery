@@ -40,7 +40,6 @@ class Myprofile extends StatelessWidget {
                    return Column(
                      children: [
                        const SizedBox(height: 10,),
-
                        Shimmer.fromColors(
                          baseColor: Colors.grey.shade200,
                          highlightColor: Colors.white,
@@ -83,6 +82,7 @@ class Myprofile extends StatelessWidget {
                      ],
                    );
                  }
+
                Map<String,dynamic> delivery=result.data!["deliverers_by_pk"];
                
                return  Column(

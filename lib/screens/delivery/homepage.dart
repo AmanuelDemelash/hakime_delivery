@@ -17,7 +17,7 @@ class Homepage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Constants.primcolor,
           elevation: 0,
-          centerTitle: false,
+          centerTitle: true,
           automaticallyImplyLeading: false,
           title: const Text(
             "Orders",

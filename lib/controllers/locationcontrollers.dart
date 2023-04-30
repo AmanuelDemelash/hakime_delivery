@@ -19,7 +19,6 @@ class Locationcontrollers extends GetxController {
 
   Future<void> get_current_location() async {
     Location location = new Location();
-
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
 
@@ -40,6 +39,8 @@ class Locationcontrollers extends GetxController {
     }
 
     locationData = await location.getLocation();
+    current_lat.value=locationData.latitude!;
+    current_long.value=locationData.latitude!;
     update();
   }
 }
