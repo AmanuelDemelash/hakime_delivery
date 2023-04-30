@@ -12,6 +12,39 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 class Dashbord extends StatelessWidget {
   const Dashbord({super.key});
 
+
+   double get_completed_percent(List orders){
+     int comp_orders=0;
+     double percent=0.0;
+
+     orders.forEach((element) {
+
+       if(element["status"]=="delivered"){
+         comp_orders=comp_orders+1;
+       }
+       percent=comp_orders/orders.length *100;
+
+     });
+     return percent;
+   }
+   int get_active_orders(List orders){
+     int activeOrder=0;
+     orders.forEach((element) {
+       if(element["status"]=="on_delivery"){
+         activeOrder=activeOrder+1;
+       }
+
+     });
+     return activeOrder;
+   }
+  int get_total_earning(List orders){
+    int totalearning=0;
+    orders.forEach((element) {
+        totalearning= totalearning + int.parse(element["delivery_fee"]);
+    });
+    return totalearning;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +79,6 @@ class Dashbord extends StatelessWidget {
                           Get.find<HomePageController>().is_online.value =
                               delivery_profile["is_online"];
                         }
-
                         return Column(
                           children: [
                             //header
@@ -111,6 +143,9 @@ class Dashbord extends StatelessWidget {
                                             activeColor: Constants.primcolor,
                                             onChanged: (value) {
                                               // run mutation of update online
+                                              Get.find<HomePageController>()
+                                                  .is_online
+                                                  .value = value;
                                               runMutation({
                                                 "id":
                                                     Get.find<SplashController>()
@@ -118,9 +153,7 @@ class Dashbord extends StatelessWidget {
                                                         .getInt("id"),
                                                 "is_online": value
                                               });
-                                              Get.find<HomePageController>()
-                                                  .is_online
-                                                  .value = value;
+
                                             },
                                           ));
                                     },
@@ -131,60 +164,6 @@ class Dashbord extends StatelessWidget {
                             const SizedBox(
                               height: 20,
                             ),
-
-                            // data
-                            // Query(
-                            //   options: QueryOptions(
-                            //       document: gql(Myquery.data_one),
-                            //       variables: {
-                            //         "id": Get.find<SplashController>()
-                            //             .prefs
-                            //             .getInt("id")
-                            //       }),
-                            //   builder: (result, {fetchMore, refetch}) {
-                            //     if (result.isLoading) {
-                            //       return Row(
-                            //         mainAxisAlignment:
-                            //             MainAxisAlignment.spaceEvenly,
-                            //         children: [
-                            //           Expanded(
-                            //             child: Shimmer.fromColors(
-                            //               baseColor: Colors.grey.shade200,
-                            //               highlightColor: Constants.whitesmoke,
-                            //               child: Container(
-                            //                 width: 150,
-                            //                 height: 50,
-                            //                 padding: const EdgeInsets.all(20),
-                            //                 margin: const EdgeInsets.only(
-                            //                     right: 10),
-                            //                 decoration: const BoxDecoration(
-                            //                     color: Colors.white,
-                            //                     borderRadius: BorderRadius.all(
-                            //                         Radius.circular(15))),
-                            //               ),
-                            //             ),
-                            //           ),
-                            //           Expanded(
-                            //             child: Shimmer.fromColors(
-                            //               baseColor: Colors.grey.shade200,
-                            //               highlightColor: Constants.whitesmoke,
-                            //               child: Container(
-                            //                 width: 150,
-                            //                 height: 50,
-                            //                 padding: const EdgeInsets.all(20),
-                            //                 margin: const EdgeInsets.only(
-                            //                     right: 10),
-                            //                 decoration: const BoxDecoration(
-                            //                     color: Colors.white,
-                            //                     borderRadius: BorderRadius.all(
-                            //                         Radius.circular(15))),
-                            //               ),
-                            //             ),
-                            //           )
-                            //         ],
-                            //       );
-                            //     }
-                            //     return
 
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -231,9 +210,9 @@ class Dashbord extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      const Text(
-                                        "23 order",
-                                        style: TextStyle(
+                                      Text(
+                                        "${delivery_profile["orders"]==null?0:delivery_profile["orders"].length} order",
+                                        style:const TextStyle(
                                             fontSize: 20, color: Colors.black),
                                       )
                                     ],
@@ -279,9 +258,9 @@ class Dashbord extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      const Text(
-                                        "100 Birr",
-                                        style: TextStyle(
+                                       Text(
+                                        "${delivery_profile["wallet"] ?? 0} ETB",
+                                        style:const TextStyle(
                                             fontSize: 20, color: Colors.black),
                                       )
                                     ],
@@ -337,9 +316,9 @@ class Dashbord extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      const Text(
-                                        "4 order",
-                                        style: TextStyle(
+                                      Text(
+                                        "${delivery_profile["orders"]==null?0:get_active_orders(delivery_profile["orders"])} order",
+                                        style:const TextStyle(
                                             fontSize: 20, color: Colors.black),
                                       )
                                     ],
@@ -385,9 +364,9 @@ class Dashbord extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      const Text(
-                                        "2203 Birr",
-                                        style: TextStyle(
+                                       Text(
+                                        "${delivery_profile["orders"]==null?0:get_total_earning(delivery_profile["orders"])} ETB",
+                                        style:const TextStyle(
                                             fontSize: 20, color: Colors.black),
                                       )
                                     ],
@@ -431,11 +410,11 @@ class Dashbord extends StatelessWidget {
                                       radius: 60.0,
                                       lineWidth: 13.0,
                                       animation: true,
-                                      percent: 0.7,
+                                      percent:delivery_profile["orders"]==null?0:get_completed_percent(delivery_profile["orders"]),
                                       animationDuration: 400,
-                                      center: const Text(
-                                        "70.0%",
-                                        style: TextStyle(
+                                      center:  Text(
+                                        "${delivery_profile["orders"]==null?0:get_completed_percent(delivery_profile["orders"])} %",
+                                        style:const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20.0),
                                       ),

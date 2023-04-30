@@ -10,6 +10,12 @@ query(\$id:Int!){
       url
     }
     is_online
+    orders {
+      id
+      status
+      delivery_fee
+    }
+    wallet
   }
 }
 """;
@@ -24,18 +30,4 @@ query(\$id:Int!){
 }
 """;
 
-// data
-
-  static String data_one = """
- query(\$id:Int!){
-  deliverers_by_pk(id:\$id) {
-    wallet
-    orders {
-      id
-    }
-  }
-}
-
-
-""";
 }

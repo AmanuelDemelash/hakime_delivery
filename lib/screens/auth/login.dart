@@ -27,6 +27,7 @@ class Login extends StatelessWidget {
         padding: const EdgeInsets.all(10));
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -208,11 +209,11 @@ class Login extends StatelessWidget {
                               Get.find<LoginController>().is_loging.value =
                                   false;
 
-                              if(data["delivererlogin"]["is_change"]==false){
-                                Get.toNamed("/changepassword");
-                              }else{
-                                Get.offAllNamed("/mainhomepage");
-                              }
+                              // if(data["delivererlogin"]["is_change"]==false){
+                              //   Get.toNamed("/changepassword");
+                              // }else{
+                              //   Get.offAllNamed("/mainhomepage");
+                              // }
                               Get.offAllNamed("/mainhomepage");
 
                             } else {}
