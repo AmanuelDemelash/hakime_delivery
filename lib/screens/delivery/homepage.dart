@@ -9,6 +9,7 @@ import 'package:hakime_delivery/apiservice/myquery.dart';
 import 'package:hakime_delivery/apiservice/subscriptions.dart';
 import 'package:hakime_delivery/controllers/orderconteroller.dart';
 import 'package:hakime_delivery/controllers/splashcontroller.dart';
+import 'package:hakime_delivery/screens/delivery/widget/acceptorder.dart';
 import 'package:hakime_delivery/widgets/buttonspinner.dart';
 import 'package:hakime_delivery/widgets/cool_loading.dart';
 
@@ -23,26 +24,27 @@ class Homepage extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Constants.primcolor,
+          backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: const Text(
             "Orders",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.black),
           ),
           actions: [
             IconButton(
                 onPressed: () {},
                 icon: const FaIcon(
                   FontAwesomeIcons.bell,
-                  color: Colors.white,
+                  color: Colors.black,
                 ))
           ],
           bottom: const TabBar(
-              unselectedLabelColor: Colors.white54,
-              labelColor: Colors.white,
+              unselectedLabelColor: Colors.black54,
+              labelColor: Colors.black,
               indicatorColor: Constants.primcolor,
+
               tabs: [
                 Tab(
                   text: "New Order",
@@ -57,7 +59,6 @@ class Homepage extends StatelessWidget {
         ),
         body: TabBarView(children: [
           //new orders
-
           Padding(
             padding: const EdgeInsets.only(top: 20),
             child: RefreshIndicator(
@@ -223,62 +224,9 @@ class Homepage extends StatelessWidget {
 
                                       // accept
                                       Expanded(
-                                          child:
-                                          Mutation(options: MutationOptions(document: gql(Mymutation.acceptorder),
-                    onError: (error) {
-                    Constants().customsnackerorr(error!.graphqlErrors.first.message);
-                    Get.find<OrderController>().is_accepting.value=false;
+                                          child:AcceptOrder(order_id: orders[index]["id"],)
 
-                    },
-                    onCompleted: (data) {
-                    if(data!.isNotEmpty){
-                    Constants().customsnacksuccs('you accepted the order ');
-                    Get.find<OrderController>().is_accepting.value=false;
-                    Get.toNamed("/activeorderdetail");
-
-                    }
-                    },
-
-                    ),
-                    builder:(runMutation, result) {
-                    if(result!.hasException){
-                    Get.find<OrderController>().is_accepting.value=false;
-                    }
-
-                    if(result!.isLoading){
-                    Get.find<OrderController>().is_accepting.value=true;
-
-                    }
-
-                                 return Obx(() =>
-                                              ClipRRect(
-                                                borderRadius:
-                                                BorderRadius.circular(10),
-                                                child:
-                                                ElevatedButton(
-                                                    style: ElevatedButton.styleFrom(
-                                                        elevation: 0,
-                                                        backgroundColor:Colors.orangeAccent,
-                                                        padding:
-                                                        const EdgeInsets.all(15)),
-                                                    onPressed: (){
-                                                      // run accept mutation
-                                                      runMutation({
-                                                        "deliverer_id":Get.find<SplashController>().prefs.getInt("id"),
-                                                        "order_id":orders[index]["id"]
-                                                      });
-
-                                                    },
-                                                    child:Get.find<OrderController>().is_accepting.value==true? Row(
-                                                      children:const[
-                                                        ButtonSpinner(),
-                                                        Text("accepting..")
-                                                      ],
-                                                    ): const Text("Accept")),
-                                              ),
-                                          );
-                    }
-    )
+                                         
 
                     ),
 
