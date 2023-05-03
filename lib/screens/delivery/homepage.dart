@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hakime_delivery/apiservice/myquery.dart';
+import 'package:hakime_delivery/widgets/cool_loading.dart';
 
 import '../../utils/constants.dart';
 
@@ -49,170 +52,200 @@ class Homepage extends StatelessWidget {
         ),
         body: TabBarView(children: [
           //new orders
+
           Padding(
             padding: const EdgeInsets.only(top: 20),
             child: RefreshIndicator(
               color: Constants.primcolor,
               onRefresh: () async {},
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    child: ScaleAnimation(
-                      child: FadeInAnimation(
-                        child: Container(
-                          width: Get.width,
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Pharmacy address",
-                                style: TextStyle(color: Colors.black54),
-                              ),
-                              ListTile(
-                                leading: ClipRRect(
-                                  borderRadius: BorderRadius.circular(40),
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        "https://media.istockphoto.com/id/1325914526/fr/photo/les-pharmaciens-noirs-masculins-et-caucasiens-utilisent-la-tablette-num%C3%A9rique-parlent-de-la.webp?s=2048x2048&w=is&k=20&c=FmBTPcU0wCrUINPi85Ppt1CStgxLjIOlqUBjd8tEQto=",
-                                    width: 45,
-                                    height: 45,
-                                    placeholder: (context, url) => Icon(
-                                      Icons.image,
-                                      color:
-                                          Constants.primcolor.withOpacity(0.5),
+              child: Query(options: QueryOptions(document: gql(Myquery.neworder)),
+                  builder:(result, {fetchMore, refetch}){
+                if(result.hasException){
+
+                }
+                if(result.isLoading){
+                  return Column(
+                    children:const [
+                       cool_loding(),
+                      Text("Today's order request")
+                    ],
+                  );
+                }
+              List orders=result.data!["orders"];
+                if(orders.isEmpty){
+                  return Column(
+                    children:const [
+                      cool_loding(),
+                      Text("Today's order request")
+                    ],
+                  );
+                }
+
+                return  ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount:orders.length,
+                  itemBuilder: (context, index) {
+                    return AnimationConfiguration.staggeredList(
+                      position: index,
+                      child: ScaleAnimation(
+                        child: FadeInAnimation(
+                          child: Container(
+                            width: Get.width,
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Pharmacy address",
+                                  style: TextStyle(color: Colors.black54),
+                                ),
+                                ListTile(
+                                  leading: ClipRRect(
+                                    borderRadius: BorderRadius.circular(40),
+                                    child: CachedNetworkImage(
+                                      imageUrl:
+                                      "https://media.istockphoto.com/id/1325914526/fr/photo/les-pharmaciens-noirs-masculins-et-caucasiens-utilisent-la-tablette-num%C3%A9rique-parlent-de-la.webp?s=2048x2048&w=is&k=20&c=FmBTPcU0wCrUINPi85Ppt1CStgxLjIOlqUBjd8tEQto=",
+                                      width: 45,
+                                      height: 45,
+                                      placeholder: (context, url) => Icon(
+                                        Icons.image,
+                                        color:
+                                        Constants.primcolor.withOpacity(0.5),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                      fit: BoxFit.cover,
                                     ),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
-                                    fit: BoxFit.cover,
+                                  ),
+                                  title: const Text(
+                                    "Roda pharmacy plc",
+                                    style: TextStyle(),
+                                  ),
+                                  subtitle: Row(
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.locationDot,
+                                        color:
+                                        Constants.primcolor.withOpacity(0.5),
+                                        size: 14,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      const Flexible(
+                                        child: Text(
+                                          "St.george church,fasile road Bahirdar",
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                title: const Text(
-                                  "Roda pharmacy plc",
-                                  style: TextStyle(),
+                                const Text(
+                                  "User address",
+                                  style: TextStyle(color: Colors.black54),
                                 ),
-                                subtitle: Row(
-                                  children: [
-                                    FaIcon(
-                                      FontAwesomeIcons.locationDot,
-                                      color:
-                                          Constants.primcolor.withOpacity(0.5),
-                                      size: 14,
+                                const ListTile(
+                                  title: Flexible(
+                                    child: Text(
+                                      "Nok kebele 14,fasile road Bahirdar",
+                                      style: TextStyle(color: Colors.black87),
                                     ),
-                                    const SizedBox(
+                                  ),
+                                ),
+                                const Divider(),
+                                const Text(
+                                  "Order date",
+                                  style: TextStyle(color: Colors.black54),
+                                ),
+                                const SizedBox(
+                                  height: 6,
+                                ),
+                                Row(
+                                  children: const [
+                                    FaIcon(
+                                      FontAwesomeIcons.clock,
+                                      size: 15,
+                                    ),
+                                    SizedBox(
                                       width: 10,
                                     ),
-                                    const Flexible(
-                                      child: Text(
-                                        "St.george church,fasile road Bahirdar",
-                                      ),
+                                    Text(
+                                      "3/2/2023  4:10PM",
+                                      style: TextStyle(color: Colors.black54),
                                     ),
                                   ],
                                 ),
-                              ),
-                              const Text(
-                                "User address",
-                                style: TextStyle(color: Colors.black54),
-                              ),
-                              const ListTile(
-                                title: Flexible(
-                                  child: Text(
-                                    "Nok kebele 14,fasile road Bahirdar",
-                                    style: TextStyle(color: Colors.black87),
-                                  ),
+                                const Divider(),
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                              ),
-                              const Divider(),
-                              const Text(
-                                "Order date",
-                                style: TextStyle(color: Colors.black54),
-                              ),
-                              const SizedBox(
-                                height: 6,
-                              ),
-                              Row(
-                                children: const [
-                                  FaIcon(
-                                    FontAwesomeIcons.clock,
-                                    size: 15,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "3/2/2023  4:10PM",
-                                    style: TextStyle(color: Colors.black54),
-                                  ),
-                                ],
-                              ),
-                              const Divider(),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Approx: 3Km",
-                                    style: TextStyle(color: Colors.black54),
-                                  ),
-                                  Row(
-                                    children: [
-                                      // accept
-                                      SizedBox(
-                                        width: 120,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  elevation: 0,
-                                                  padding:
-                                                      const EdgeInsets.all(15)),
-                                              onPressed: () {},
-                                              child: const Text("Accept")),
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      "Approx: 3Km",
+                                      style: TextStyle(color: Colors.black54),
+                                    ),
+                                    Row(
+                                      children: [
+                                        // accept
+                                        SizedBox(
+                                          width: 120,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(10),
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    elevation: 0,
+                                                    padding:
+                                                    const EdgeInsets.all(15)),
+                                                onPressed: () {},
+                                                child: const Text("Accept")),
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        width: 6,
-                                      ),
+                                        const SizedBox(
+                                          width: 6,
+                                        ),
 
-                                      // reject
-                                      SizedBox(
-                                        width: 120,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  elevation: 0,
-                                                  backgroundColor: Colors.red,
-                                                  padding:
-                                                      const EdgeInsets.all(15)),
-                                              onPressed: () {},
-                                              child: const Text("Reject")),
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              )
-                            ],
+                                        // reject
+                                        SizedBox(
+                                          width: 120,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                            BorderRadius.circular(10),
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    elevation: 0,
+                                                    backgroundColor: Colors.red,
+                                                    padding:
+                                                    const EdgeInsets.all(15)),
+                                                onPressed: () {},
+                                                child: const Text("Reject")),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                );
+
+                  }
+
+                )
+
+
             ),
           ),
           // active orders

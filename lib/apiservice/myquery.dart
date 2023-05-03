@@ -55,4 +55,31 @@ query(\$id:Int!){
   }
 }
 """;
+
+// order
+
+static String neworder="""
+query{
+  orders(where: {status: {_eq: confirmed}}, order_by: {created_at: desc}) {
+    id
+    distance
+    order_address {
+      location
+      latitude
+      longitude
+    }
+    pharmacy {
+      name
+      logo_image {
+        url
+      }
+      address {
+        location
+        latitude
+        longitude
+      }
+    }
+  }
+}
+""";
 }

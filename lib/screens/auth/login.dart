@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
 import '../../apiservice/mymutation.dart';
 import '../../controllers/connectivity.dart';
 import '../../controllers/logincontroller.dart';
@@ -32,7 +31,8 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Constants.whitesmoke,
-      body: SafeArea(
+      body:
+      SafeArea(
           child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Container(

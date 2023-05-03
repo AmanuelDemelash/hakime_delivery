@@ -19,4 +19,16 @@ class Mymutation {
 }
 
 """;
+
+  // accept order
+
+  static String acceptorder="""
+  mutation(\$deliverer_id:Int!,\$order_id:Int!){
+  assignDeliverer(deliverer_id:\$deliverer_id, order_id:\$order_id) {
+    id
+  }
+}
+
+  
+  """;
 }

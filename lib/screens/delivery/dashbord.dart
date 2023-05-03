@@ -66,18 +66,20 @@ class Dashbord extends StatelessWidget {
                           print(result.exception.toString());
                         }
                         if (result.isLoading) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              cool_loding(),
-                            ],
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                cool_loding(),
+                              ],
+                            ),
                           );
                         }
-                        Map<String, dynamic> delivery_profile =
+                        Map<String, dynamic> deliveryProfile =
                             result.data!["deliverers_by_pk"];
-                        if (delivery_profile.isNotEmpty) {
+                        if (deliveryProfile.isNotEmpty) {
                           Get.find<HomePageController>().is_online.value =
-                              delivery_profile["is_online"];
+                              deliveryProfile["is_online"];
                         }
                         return Column(
                           children: [
@@ -88,7 +90,7 @@ class Dashbord extends StatelessWidget {
                                 CircleAvatar(
                                   radius: 25,
                                   backgroundImage: NetworkImage(
-                                      delivery_profile["image"]["url"]),
+                                      deliveryProfile["image"]["url"]),
                                 ),
                                 const SizedBox(
                                   width: 10,
@@ -102,7 +104,7 @@ class Dashbord extends StatelessWidget {
                                           color: Colors.black54, fontSize: 16),
                                     ),
                                     Text(
-                                      delivery_profile["full_name"],
+                                      deliveryProfile["full_name"],
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w200,
                                           fontSize: 18),
@@ -211,7 +213,7 @@ class Dashbord extends StatelessWidget {
                                         height: 10,
                                       ),
                                       Text(
-                                        "${delivery_profile["orders"]==null?0:delivery_profile["orders"].length} order",
+                                        "${deliveryProfile["orders"]==null?0:deliveryProfile["orders"].length} order",
                                         style:const TextStyle(
                                             fontSize: 20, color: Colors.black),
                                       )
@@ -259,7 +261,7 @@ class Dashbord extends StatelessWidget {
                                         height: 10,
                                       ),
                                        Text(
-                                        "${delivery_profile["wallet"] ?? 0} ETB",
+                                        "${deliveryProfile["wallet"] ?? 0} ETB",
                                         style:const TextStyle(
                                             fontSize: 20, color: Colors.black),
                                       )
@@ -317,7 +319,7 @@ class Dashbord extends StatelessWidget {
                                         height: 10,
                                       ),
                                       Text(
-                                        "${delivery_profile["orders"]==null?0:get_active_orders(delivery_profile["orders"])} order",
+                                        "${deliveryProfile["orders"]==null?0:get_active_orders(deliveryProfile["orders"])} order",
                                         style:const TextStyle(
                                             fontSize: 20, color: Colors.black),
                                       )
@@ -365,7 +367,7 @@ class Dashbord extends StatelessWidget {
                                         height: 10,
                                       ),
                                        Text(
-                                        "${delivery_profile["orders"]==null?0:get_total_earning(delivery_profile["orders"])} ETB",
+                                        "${deliveryProfile["orders"]==null?0:get_total_earning(deliveryProfile["orders"])} ETB",
                                         style:const TextStyle(
                                             fontSize: 20, color: Colors.black),
                                       )
@@ -410,10 +412,10 @@ class Dashbord extends StatelessWidget {
                                       radius: 60.0,
                                       lineWidth: 13.0,
                                       animation: true,
-                                      percent:delivery_profile["orders"]==null?0:get_completed_percent(delivery_profile["orders"]),
+                                      percent:deliveryProfile["orders"]==null?0:get_completed_percent(deliveryProfile["orders"]),
                                       animationDuration: 400,
                                       center:  Text(
-                                        "${delivery_profile["orders"]==null?0:get_completed_percent(delivery_profile["orders"])} %",
+                                        "${deliveryProfile["orders"]==null?0:get_completed_percent(deliveryProfile["orders"])} %",
                                         style:const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20.0),
