@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hakime_delivery/apiservice/mymutation.dart';
 import 'package:hakime_delivery/apiservice/myquery.dart';
+import 'package:hakime_delivery/apiservice/subscriptions.dart';
 import 'package:hakime_delivery/controllers/orderconteroller.dart';
 import 'package:hakime_delivery/controllers/splashcontroller.dart';
 import 'package:hakime_delivery/widgets/buttonspinner.dart';
@@ -62,7 +63,7 @@ class Homepage extends StatelessWidget {
             child: RefreshIndicator(
               color: Constants.primcolor,
               onRefresh: () async {},
-              child: Query(options: QueryOptions(document: gql(Myquery.neworder)),
+              child: Subscription(options: SubscriptionOptions(document: gql(MySubscription.neworders)),
                   builder:(result, {fetchMore, refetch}){
                 if(result.hasException){
 
@@ -91,29 +92,7 @@ class Homepage extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   itemCount:orders.length,
                   itemBuilder: (context, index) {
-                    return  Mutation(options: MutationOptions(document: gql(Mymutation.acceptorder),
-                      onError: (error) {
-                      Constants().customsnackerorr(error!.graphqlErrors.first.message);
-
-                      },
-                      onCompleted: (data) {
-                        if(data!.isNotEmpty){
-                          Constants().customsnacksuccs('you accepted the order ');
-                          Get.toNamed("/activeorderdetail");
-                        }
-                      },
-
-                    ),
-                        builder:(runMutation, result) {
-                      if(result!.hasException){
-                        Get.find<OrderController>().is_accepting.value=false;
-                      }
-
-                       if(result!.isLoading){
-                         Get.find<OrderController>().is_accepting.value=true;
-
-                       }
-                      return AnimationConfiguration.staggeredList(
+                    return AnimationConfiguration.staggeredList(
                         position: index,
                         child: ScaleAnimation(
                           child: FadeInAnimation(
@@ -244,7 +223,34 @@ class Homepage extends StatelessWidget {
 
                                       // accept
                                       Expanded(
-                                          child: Obx(() =>
+                                          child:
+                                          Mutation(options: MutationOptions(document: gql(Mymutation.acceptorder),
+                    onError: (error) {
+                    Constants().customsnackerorr(error!.graphqlErrors.first.message);
+                    Get.find<OrderController>().is_accepting.value=false;
+
+                    },
+                    onCompleted: (data) {
+                    if(data!.isNotEmpty){
+                    Constants().customsnacksuccs('you accepted the order ');
+                    Get.find<OrderController>().is_accepting.value=false;
+                    Get.toNamed("/activeorderdetail");
+
+                    }
+                    },
+
+                    ),
+                    builder:(runMutation, result) {
+                    if(result!.hasException){
+                    Get.find<OrderController>().is_accepting.value=false;
+                    }
+
+                    if(result!.isLoading){
+                    Get.find<OrderController>().is_accepting.value=true;
+
+                    }
+
+                                 return Obx(() =>
                                               ClipRRect(
                                                 borderRadius:
                                                 BorderRadius.circular(10),
@@ -270,7 +276,11 @@ class Homepage extends StatelessWidget {
                                                       ],
                                                     ): const Text("Accept")),
                                               ),
-                                          ) ),
+                                          );
+                    }
+    )
+
+                    ),
 
 
                                       const SizedBox(
@@ -287,19 +297,17 @@ class Homepage extends StatelessWidget {
                           ),
                         ),
                       );
-                        },);
-
+                        },
+    );
 
                   },
-                );
-
-                  }
-
                 )
 
+    )
+    ),
 
-            ),
-          ),
+
+
 
           // active orders
           Padding(
