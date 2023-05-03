@@ -4,13 +4,8 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:hakime_delivery/apiservice/mymutation.dart';
-import 'package:hakime_delivery/apiservice/myquery.dart';
 import 'package:hakime_delivery/apiservice/subscriptions.dart';
-import 'package:hakime_delivery/controllers/orderconteroller.dart';
-import 'package:hakime_delivery/controllers/splashcontroller.dart';
 import 'package:hakime_delivery/screens/delivery/widget/acceptorder.dart';
-import 'package:hakime_delivery/widgets/buttonspinner.dart';
 import 'package:hakime_delivery/widgets/cool_loading.dart';
 
 import '../../utils/constants.dart';
