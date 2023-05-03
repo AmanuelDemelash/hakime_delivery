@@ -65,6 +65,7 @@ class Homepage extends StatelessWidget {
                 }
                 if(result.isLoading){
                   return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children:const [
                        cool_loding(),
                       Text("Today's order request")
@@ -74,6 +75,7 @@ class Homepage extends StatelessWidget {
               List orders=result.data!["orders"];
                 if(orders.isEmpty){
                   return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children:const [
                       cool_loding(),
                       Text("Today's order request")
@@ -104,11 +106,11 @@ class Homepage extends StatelessWidget {
                                   style: TextStyle(color: Colors.black54),
                                 ),
                                 ListTile(
-                                  leading: ClipRRect(
+                                  leading:
+                                  ClipRRect(
                                     borderRadius: BorderRadius.circular(40),
                                     child: CachedNetworkImage(
-                                      imageUrl:
-                                      "https://media.istockphoto.com/id/1325914526/fr/photo/les-pharmaciens-noirs-masculins-et-caucasiens-utilisent-la-tablette-num%C3%A9rique-parlent-de-la.webp?s=2048x2048&w=is&k=20&c=FmBTPcU0wCrUINPi85Ppt1CStgxLjIOlqUBjd8tEQto=",
+                                      imageUrl:orders[index]["pharmacy"]["logo_image"]["url"]  ,
                                       width: 45,
                                       height: 45,
                                       placeholder: (context, url) => Icon(
@@ -121,9 +123,9 @@ class Homepage extends StatelessWidget {
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                                  title: const Text(
-                                    "Roda pharmacy plc",
-                                    style: TextStyle(),
+                                  title:Text(
+                                    orders[index]["pharmacy"]["name"],
+                                    style:const TextStyle(),
                                   ),
                                   subtitle: Row(
                                     children: [
@@ -136,9 +138,9 @@ class Homepage extends StatelessWidget {
                                       const SizedBox(
                                         width: 10,
                                       ),
-                                      const Flexible(
+                                      Flexible(
                                         child: Text(
-                                          "St.george church,fasile road Bahirdar",
+                                          orders[index]["pharmacy"]["address"]["location"],
                                         ),
                                       ),
                                     ],
@@ -148,12 +150,23 @@ class Homepage extends StatelessWidget {
                                   "User address",
                                   style: TextStyle(color: Colors.black54),
                                 ),
-                                const ListTile(
-                                  title: Flexible(
-                                    child: Text(
-                                      "Nok kebele 14,fasile road Bahirdar",
-                                      style: TextStyle(color: Colors.black87),
-                                    ),
+                                ListTile(
+                                  title: Row(
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.locationDot,
+                                        color:
+                                        Constants.primcolor.withOpacity(0.5),
+                                        size: 14,
+                                      ),
+                                      const SizedBox(width: 10,),
+                                      Flexible(
+                                        child: Text(
+                                        orders[index]["order_address"]["location"],
+                                          style:const TextStyle(color: Colors.black87),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 const Divider(),
@@ -165,32 +178,42 @@ class Homepage extends StatelessWidget {
                                   height: 6,
                                 ),
                                 Row(
-                                  children: const [
-                                    FaIcon(
+                                  children:[
+                                    const FaIcon(
                                       FontAwesomeIcons.clock,
                                       size: 15,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Text(
-                                      "3/2/2023  4:10PM",
-                                      style: TextStyle(color: Colors.black54),
+                                      orders[index]["created_at"].toString().substring(0,9),
+                                      style:const TextStyle(color: Colors.black54),
                                     ),
                                   ],
                                 ),
                                 const Divider(),
                                 const SizedBox(
-                                  height: 10,
+                                  height:4,
                                 ),
+                                // distance and fee
                                 Row(
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text(
-                                      "Approx: 3Km",
-                                      style: TextStyle(color: Colors.black54),
+                                     Column(
+                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                       children: [
+                                         Text(
+                                          "Approx: ${orders[index]["distance"]}Km",
+                                          style:const TextStyle(color: Colors.black54),
                                     ),
+                                         Text(
+                                           "ETB: ${orders[index]["delivery_fee"]}",
+                                           style:const TextStyle(color: Colors.black54),
+                                         ),
+                                       ],
+                                     ),
                                     Row(
                                       children: [
                                         // accept
@@ -202,9 +225,14 @@ class Homepage extends StatelessWidget {
                                             child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
                                                     elevation: 0,
+                                                    backgroundColor: Colors.orange,
                                                     padding:
                                                     const EdgeInsets.all(15)),
-                                                onPressed: () {},
+                                                onPressed: ()async{
+                                                  // run accept mutation
+
+
+                                                },
                                                 child: const Text("Accept")),
                                           ),
                                         ),
@@ -212,22 +240,7 @@ class Homepage extends StatelessWidget {
                                           width: 6,
                                         ),
 
-                                        // reject
-                                        SizedBox(
-                                          width: 120,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                            BorderRadius.circular(10),
-                                            child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    elevation: 0,
-                                                    backgroundColor: Colors.red,
-                                                    padding:
-                                                    const EdgeInsets.all(15)),
-                                                onPressed: () {},
-                                                child: const Text("Reject")),
-                                          ),
-                                        )
+
                                       ],
                                     )
                                   ],

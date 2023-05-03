@@ -65,8 +65,6 @@ query{
     distance
     order_address {
       location
-      latitude
-      longitude
     }
     pharmacy {
       name
@@ -75,10 +73,10 @@ query{
       }
       address {
         location
-        latitude
-        longitude
       }
     }
+    delivery_fee
+    created_at
   }
 }
 """;
