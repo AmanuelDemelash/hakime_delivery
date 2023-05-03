@@ -4,7 +4,11 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hakime_delivery/apiservice/mymutation.dart';
 import 'package:hakime_delivery/apiservice/myquery.dart';
+import 'package:hakime_delivery/controllers/orderconteroller.dart';
+import 'package:hakime_delivery/controllers/splashcontroller.dart';
+import 'package:hakime_delivery/widgets/buttonspinner.dart';
 import 'package:hakime_delivery/widgets/cool_loading.dart';
 
 import '../../utils/constants.dart';
@@ -87,170 +91,205 @@ class Homepage extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   itemCount:orders.length,
                   itemBuilder: (context, index) {
-                    return AnimationConfiguration.staggeredList(
-                      position: index,
-                      child: ScaleAnimation(
-                        child: FadeInAnimation(
-                          child: Container(
-                            width: Get.width,
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Pharmacy address",
-                                  style: TextStyle(color: Colors.black54),
-                                ),
-                                ListTile(
-                                  leading:
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(40),
-                                    child: CachedNetworkImage(
-                                      imageUrl:orders[index]["pharmacy"]["logo_image"]["url"]  ,
-                                      width: 45,
-                                      height: 45,
-                                      placeholder: (context, url) => Icon(
-                                        Icons.image,
-                                        color:
-                                        Constants.primcolor.withOpacity(0.5),
+                    return  Mutation(options: MutationOptions(document: gql(Mymutation.acceptorder),
+                      onError: (error) {
+                      Constants().customsnackerorr(error!.graphqlErrors.first.message);
+
+                      },
+                      onCompleted: (data) {
+                        if(data!.isNotEmpty){
+                          Constants().customsnacksuccs('you accepted the order ');
+                          Get.toNamed("/activeorderdetail");
+                        }
+                      },
+
+                    ),
+                        builder:(runMutation, result) {
+                      if(result!.hasException){
+                        Get.find<OrderController>().is_accepting.value=false;
+                      }
+
+                       if(result!.isLoading){
+                         Get.find<OrderController>().is_accepting.value=true;
+
+                       }
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        child: ScaleAnimation(
+                          child: FadeInAnimation(
+                            child: Container(
+                              width: Get.width,
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Pharmacy address",
+                                    style: TextStyle(color: Colors.black54),
+                                  ),
+                                  ListTile(
+                                    leading:
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(40),
+                                      child: CachedNetworkImage(
+                                        imageUrl:orders[index]["pharmacy"]["logo_image"]["url"]  ,
+                                        width: 45,
+                                        height: 45,
+                                        placeholder: (context, url) => Icon(
+                                          Icons.image,
+                                          color:
+                                          Constants.primcolor.withOpacity(0.5),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                        fit: BoxFit.cover,
                                       ),
-                                      errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                      fit: BoxFit.cover,
+                                    ),
+                                    title:Text(
+                                      orders[index]["pharmacy"]["name"],
+                                      style:const TextStyle(),
+                                    ),
+                                    subtitle: Row(
+                                      children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.locationDot,
+                                          color:
+                                          Constants.primcolor.withOpacity(0.5),
+                                          size: 14,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Flexible(
+                                          child: Text(
+                                            orders[index]["pharmacy"]["address"]["location"],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  title:Text(
-                                    orders[index]["pharmacy"]["name"],
-                                    style:const TextStyle(),
+                                  const Text(
+                                    "User address",
+                                    style: TextStyle(color: Colors.black54),
                                   ),
-                                  subtitle: Row(
-                                    children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.locationDot,
-                                        color:
-                                        Constants.primcolor.withOpacity(0.5),
-                                        size: 14,
+                                  ListTile(
+                                    title: Row(
+                                      children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.locationDot,
+                                          color:
+                                          Constants.primcolor.withOpacity(0.5),
+                                          size: 14,
+                                        ),
+                                        const SizedBox(width: 10,),
+                                        Flexible(
+                                          child: Text(
+                                            orders[index]["order_address"]["location"],
+                                            style:const TextStyle(color: Colors.black87),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const Divider(),
+                                  const Text(
+                                    "Order date",
+                                    style: TextStyle(color: Colors.black54),
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Row(
+                                    children:[
+                                      const FaIcon(
+                                        FontAwesomeIcons.clock,
+                                        size: 15,
                                       ),
                                       const SizedBox(
                                         width: 10,
                                       ),
-                                      Flexible(
-                                        child: Text(
-                                          orders[index]["pharmacy"]["address"]["location"],
-                                        ),
+                                      Text(
+                                        orders[index]["created_at"].toString().substring(0,9),
+                                        style:const TextStyle(color: Colors.black54),
                                       ),
                                     ],
                                   ),
-                                ),
-                                const Text(
-                                  "User address",
-                                  style: TextStyle(color: Colors.black54),
-                                ),
-                                ListTile(
-                                  title: Row(
+                                  const Divider(),
+                                  const SizedBox(
+                                    height:4,
+                                  ),
+                                  // distance and fee
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.locationDot,
-                                        color:
-                                        Constants.primcolor.withOpacity(0.5),
-                                        size: 14,
-                                      ),
-                                      const SizedBox(width: 10,),
-                                      Flexible(
-                                        child: Text(
-                                        orders[index]["order_address"]["location"],
-                                          style:const TextStyle(color: Colors.black87),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Divider(),
-                                const Text(
-                                  "Order date",
-                                  style: TextStyle(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 6,
-                                ),
-                                Row(
-                                  children:[
-                                    const FaIcon(
-                                      FontAwesomeIcons.clock,
-                                      size: 15,
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      orders[index]["created_at"].toString().substring(0,9),
-                                      style:const TextStyle(color: Colors.black54),
-                                    ),
-                                  ],
-                                ),
-                                const Divider(),
-                                const SizedBox(
-                                  height:4,
-                                ),
-                                // distance and fee
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                     Column(
-                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                       children: [
-                                         Text(
-                                          "Approx: ${orders[index]["distance"]}Km",
-                                          style:const TextStyle(color: Colors.black54),
-                                    ),
-                                         Text(
-                                           "ETB: ${orders[index]["delivery_fee"]}",
-                                           style:const TextStyle(color: Colors.black54),
-                                         ),
-                                       ],
-                                     ),
-                                    Row(
-                                      children: [
-                                        // accept
-                                        SizedBox(
-                                          width: 120,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                            BorderRadius.circular(10),
-                                            child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    elevation: 0,
-                                                    backgroundColor: Colors.orange,
-                                                    padding:
-                                                    const EdgeInsets.all(15)),
-                                                onPressed: ()async{
-                                                  // run accept mutation
-
-
-                                                },
-                                                child: const Text("Accept")),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Approx: ${orders[index]["distance"]}Km",
+                                            style:const TextStyle(color: Colors.black54),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 6,
-                                        ),
+                                          Text(
+                                            "ETB: ${orders[index]["delivery_fee"]}",
+                                            style:const TextStyle(color: Colors.black54),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(width:50,),
+
+                                      // accept
+                                      Expanded(
+                                          child: Obx(() =>
+                                              ClipRRect(
+                                                borderRadius:
+                                                BorderRadius.circular(10),
+                                                child:
+                                                ElevatedButton(
+                                                    style: ElevatedButton.styleFrom(
+                                                        elevation: 0,
+                                                        backgroundColor:Colors.orangeAccent,
+                                                        padding:
+                                                        const EdgeInsets.all(15)),
+                                                    onPressed: (){
+                                                      // run accept mutation
+                                                      runMutation({
+                                                        "deliverer_id":Get.find<SplashController>().prefs.getInt("id"),
+                                                        "order_id":orders[index]["id"]
+                                                      });
+
+                                                    },
+                                                    child:Get.find<OrderController>().is_accepting.value==true? Row(
+                                                      children:const[
+                                                        ButtonSpinner(),
+                                                        Text("accepting..")
+                                                      ],
+                                                    ): const Text("Accept")),
+                                              ),
+                                          ) ),
 
 
-                                      ],
-                                    )
-                                  ],
-                                )
-                              ],
+                                      const SizedBox(
+                                        width: 6,
+                                      ),
+
+
+
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
+                      );
+                        },);
+
+
                   },
                 );
 
@@ -261,6 +300,7 @@ class Homepage extends StatelessWidget {
 
             ),
           ),
+
           // active orders
           Padding(
             padding: const EdgeInsets.only(top: 20),

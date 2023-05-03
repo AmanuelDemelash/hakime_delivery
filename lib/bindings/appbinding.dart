@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hakime_delivery/controllers/orderconteroller.dart';
 
 import '../controllers/connectivity.dart';
 import '../controllers/homepagecontroller.dart';
@@ -12,5 +13,6 @@ class AppBinding implements Bindings {
     Get.put(LoginController());
     Get.put(HomePageController());
     Get.put(CheekConnecctivityController());
+    Get.put(OrderController());
   }
 }

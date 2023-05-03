@@ -33,14 +33,13 @@ class Dashbord extends StatelessWidget {
        if(element["status"]=="on_delivery"){
          activeOrder=activeOrder+1;
        }
-
      });
      return activeOrder;
    }
   int get_total_earning(List orders){
     int totalearning=0;
     orders.forEach((element) {
-        totalearning= totalearning + int.parse(element["delivery_fee"]);
+        totalearning= totalearning + int.parse(element["delivery_fee"].toString());
     });
     return totalearning;
   }
@@ -261,7 +260,7 @@ class Dashbord extends StatelessWidget {
                                         height: 10,
                                       ),
                                        Text(
-                                        "${deliveryProfile["wallet"] ?? 0} ETB",
+                                        "${deliveryProfile["wallet"]?? 0} ETB",
                                         style:const TextStyle(
                                             fontSize: 20, color: Colors.black),
                                       )
@@ -367,7 +366,7 @@ class Dashbord extends StatelessWidget {
                                         height: 10,
                                       ),
                                        Text(
-                                        "${deliveryProfile["orders"]==null?0:get_total_earning(deliveryProfile["orders"])} ETB",
+                                        "${deliveryProfile["orders"]==null?0:get_total_earning(deliveryProfile["orders"]).toString()} ETB",
                                         style:const TextStyle(
                                             fontSize: 20, color: Colors.black),
                                       )
@@ -415,7 +414,7 @@ class Dashbord extends StatelessWidget {
                                       percent:deliveryProfile["orders"]==null?0:get_completed_percent(deliveryProfile["orders"]),
                                       animationDuration: 400,
                                       center:  Text(
-                                        "${deliveryProfile["orders"]==null?0:get_completed_percent(deliveryProfile["orders"])} %",
+                                        "${deliveryProfile["orders"]==null?0.toString():get_completed_percent(deliveryProfile["orders"]).toString()} %",
                                         style:const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20.0),
