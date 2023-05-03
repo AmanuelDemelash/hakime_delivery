@@ -196,7 +196,7 @@ class Login extends StatelessWidget {
                           document: gql(Mymutation.login),
                           onError: (error) {
                             Get.find<LoginController>().is_loging.value = false;
-                            customsnack("cheek your email and passsword");
+                            customsnack(error!.graphqlErrors.first.message);
                           },
                           onCompleted: (data) {
                             if (data != null) {
