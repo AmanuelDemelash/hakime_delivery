@@ -56,6 +56,32 @@ query(\$id:Int!){
 }
 """;
 
+// active order
+  static String activeorder="""
+  query(\$id:Int!){
+  orders(where: {deliverer_id: {_eq:\$id}, status: {_eq: on_delivery}}, order_by: {created_at: desc}) {
+    id
+    distance
+    order_address {
+      location
+    }
+    pharmacy {
+      name
+      logo_image {
+        url
+      }
+      address {
+        location
+      }
+    }
+    delivery_fee
+    created_at
+  }
+}
+
+  
+  """;
+
 // active order detail
 static String activeorderdetail="""
 query{

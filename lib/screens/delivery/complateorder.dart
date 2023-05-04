@@ -3,13 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swipe_button/flutter_swipe_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:hakime_delivery/widgets/cool_loading.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hakime_delivery/apiservice/mymutation.dart';
 
+import '../../controllers/orderconteroller.dart';
 import '../../utils/constants.dart';
 
 class ComplateOrder extends StatelessWidget {
    ComplateOrder({super.key});
   var order_data=Get.arguments;
+
+   TextEditingController textcodecontroller=TextEditingController();
+  final _formkey=GlobalKey<FormState>();
+
+
+   getsnackbar(String mesg){
+     Get.snackbar("error", mesg,
+         snackPosition:SnackPosition.BOTTOM,
+         backgroundColor: Colors.red,
+         colorText: Colors.white
+     );
+
+   }
+   getconfirmsnackbar(String mesg){
+     Get.snackbar("successfully", mesg,
+         snackPosition:SnackPosition.BOTTOM,
+         backgroundColor: Colors.red,
+         colorText: Colors.white
+     );
+
+   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -164,19 +188,24 @@ class ComplateOrder extends StatelessWidget {
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text("Enter Order Code to Complete the Ortder!"),
-                  SizedBox(
+                children: [
+                  const Text("Enter Order Code to Complete the Order!"),
+                  const SizedBox(
                     height: 10,
                   ),
-                  Text("Order Code*"),
-                  SizedBox(
+                  const Text("Order Code*"),
+                  const SizedBox(
                     height: 10,
                   ),
-                  TextField(
-                    decoration: InputDecoration(
+                  Form(
+                    key:_formkey ,
+                    child:TextField(
+                    controller:textcodecontroller,
+                    decoration:const InputDecoration(
                         hintText: "Enter order code",
                         filled: true,
+                        prefixIcon:Icon(Icons.password),
+                        prefixIconColor: Constants.primcolor,
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Constants.primcolor)),
                         enabledBorder: OutlineInputBorder(
@@ -185,9 +214,10 @@ class ComplateOrder extends StatelessWidget {
                             borderSide: BorderSide(color: Constants.primcolor)),
                         border: OutlineInputBorder(
                             borderSide:
-                                BorderSide(color: Constants.primcolor))),
-                  ),
-                  SizedBox(
+                            BorderSide(color: Constants.primcolor))),
+                  ), ),
+
+                 const  SizedBox(
                     height: 10,
                   ),
                 ],
@@ -201,38 +231,82 @@ class ComplateOrder extends StatelessWidget {
             // swaip button
             Container(
               margin: const EdgeInsets.all(20),
-              child: Center(
-                  child: SwipeButton(
-                width: Get.width,
-                height: 60,
-                thumb: const Center(
-                  child: FaIcon(
-                    FontAwesomeIcons.angleRight,
-                    color: Colors.white,
+              child:
+                  Mutation(options: MutationOptions(document: gql(Mymutation.completeorder),
+                  onError: (error) {
+                    Get.find<OrderController>().is_completing.value=false;
+                  },
+                    onCompleted: (data) {
+                      if(data!.isNotEmpty){
+                        Get.find<OrderController>().is_completing.value=false;
+                        getconfirmsnackbar("successfully completed");
+                        Get.toNamed("/mainhomepage");
+                      }
+                    },
                   ),
-                ),
-                onSwipeEnd: () {
-                  Get.dialog(AlertDialog(
-                    title: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30)),
-                      child: cool_loding(),
-                    ),
-                  ));
-                },
-                activeTrackColor: Constants.primcolor.withOpacity(0.7),
-                elevationThumb: 10,
-                enabled: true,
-                child: const Text(
-                  "Swipe to complet order",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              )),
+                      builder:(runMutation, result) {
+                    if(result!.hasException){
+                      print(result.exception.toString());
+                      Get.find<OrderController>().is_completing.value=false;
+                    }
+
+                    if(result!.isLoading){
+                      Get.find<OrderController>().is_completing.value=true;
+                    }
+
+
+                    return  Center(
+
+                        child:
+                            Obx(() => SwipeButton(
+                              width: Get.width,
+                              height: 60,
+
+                              thumb:Get.find<OrderController>().is_completing.value==true?const CircularProgressIndicator(
+                                color: Colors.white,
+                              ) :const Center(
+                                child: FaIcon(
+                                  FontAwesomeIcons.angleRight,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onSwipeStart: ()async{
+                                _formkey.currentState!.save();
+                                if(textcodecontroller.text==""){
+                                  getsnackbar("please enter order code to complete the task ");
+
+                                }
+                                else if(textcodecontroller.text!=order_data["code"]){
+                                  getsnackbar("enter correct order code to complete the task");
+                                }else{
+                                  Get.find<OrderController>().is_correct_code.value=true;
+                                }
+
+                              },
+                              onSwipeEnd: () {
+                                if(Get.find<OrderController>().is_correct_code.value){
+                                  // run complet mutation
+                                  runMutation({
+                                    "id":order_data["id"]
+                                  });
+
+                                }
+                              },
+                              activeTrackColor: Constants.primcolor.withOpacity(0.7),
+                              elevationThumb: 10,
+                              enabled:true,
+                              child: const Text(
+                                "Swipe to complete order",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ))
+
+
+                        );
+                      },)
+
             )
           ],
         ),

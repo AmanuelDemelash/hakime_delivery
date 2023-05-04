@@ -31,4 +31,14 @@ class Mymutation {
 
   
   """;
+  // complete order
+
+ static String completeorder="""
+ mutation(\$id:Int!){
+  update_orders_by_pk(_set: {status: delivered}, pk_columns: {id:\$id}) {
+    id
+  }
+}
+ 
+ """;
 }

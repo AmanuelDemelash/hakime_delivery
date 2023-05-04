@@ -23,6 +23,7 @@ class Dashbord extends StatelessWidget {
          comp_orders=comp_orders+1;
        }
        percent=comp_orders/orders.length *100;
+       percent=percent/100;
 
      });
      return percent;
@@ -393,16 +394,16 @@ class Dashbord extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
+                                    children:  [
+                                     const Text(
                                         "Total Completed orders",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        "1/3 completes",
-                                        style: TextStyle(color: Colors.black54),
+                                        "1/${deliveryProfile["orders"]==null?0:deliveryProfile["orders"].length} completes",
+                                        style:const TextStyle(color: Colors.black54),
                                       ),
                                     ],
                                   ),
@@ -414,7 +415,7 @@ class Dashbord extends StatelessWidget {
                                       percent:deliveryProfile["orders"]==null?0:get_completed_percent(deliveryProfile["orders"]),
                                       animationDuration: 400,
                                       center:  Text(
-                                        "${deliveryProfile["orders"]==null?0.toString():get_completed_percent(deliveryProfile["orders"]).toString()} %",
+                                        "${deliveryProfile["orders"]==null?0.toString():get_completed_percent(deliveryProfile["orders"])*100} %",
                                         style:const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20.0),
