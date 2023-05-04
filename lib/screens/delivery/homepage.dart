@@ -8,6 +8,7 @@ import 'package:hakime_delivery/apiservice/subscriptions.dart';
 import 'package:hakime_delivery/screens/delivery/widget/acceptorder.dart';
 import 'package:hakime_delivery/widgets/cool_loading.dart';
 
+import '../../controllers/notification_controller.dart';
 import '../../utils/constants.dart';
 
 class Homepage extends StatelessWidget {
@@ -82,6 +83,9 @@ class Homepage extends StatelessWidget {
                       Text("Today's order request")
                     ],
                   );
+                }
+                else{
+                  Get.find<NotificationController>().play_sound();
                 }
 
                 return  ListView.builder(
@@ -334,7 +338,7 @@ class Homepage extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: () =>
-                                        Get.toNamed("/activeorderdetail"),
+                                        Get.toNamed("/activeorderdetail",arguments: 2),
                                     child: Container(
                                         width: 50,
                                         height: 50,

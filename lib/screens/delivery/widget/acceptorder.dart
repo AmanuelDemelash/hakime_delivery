@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hakime_delivery/controllers/notification_controller.dart';
 import 'package:hakime_delivery/widgets/cool_loading.dart';
 import '../../../apiservice/mymutation.dart';
 import '../../../controllers/orderconteroller.dart';
@@ -19,7 +20,7 @@ class AcceptOrder extends StatelessWidget {
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               elevation: 0,
-              backgroundColor: Constants.primcolor.withOpacity(0.5),
+              backgroundColor: Constants.primcolor,
               padding: const EdgeInsets.all(15)),
           onPressed: () {
             // show dialog
@@ -53,7 +54,8 @@ class AcceptOrder extends StatelessWidget {
                             Get.find<OrderController>().is_accepting.value =
                                 false;
 
-                            Get.toNamed("/activeorderdetail");
+                            Get.toNamed("/activeorderdetail",arguments: order_id);
+                            Get.find<NotificationController>().crateNotification("task accepted", "you successfully accepted task to deliver");
                           } else {}
                         },
                       ),
@@ -93,10 +95,3 @@ class AcceptOrder extends StatelessWidget {
   }
 }
 
-//
-// Get.find<OrderController>().is_accepting.value==true? Row(
-// children:const[
-// ButtonSpinner(),
-// Text("accepting..")
-// ],
-// ):

@@ -53,6 +53,7 @@ dependencies:
   flutter_swipe_button: ^2.1.1+1
   url_launcher: ^6.1.10
   percent_indicator: ^4.2.3
+  audioplayers: ^4.0.1
 
 dev_dependencies:
   flutter_test:

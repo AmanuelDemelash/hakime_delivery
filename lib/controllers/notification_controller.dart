@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,7 @@ class NotificationController extends GetxController {
     });
     super.onInit();
   }
+
 
   Future<void> crateNotification(String title, String body) async {
     await AwesomeNotifications().createNotification(
@@ -45,5 +47,13 @@ class NotificationController extends GetxController {
         millisecond: 0,
       ),
     );
+  }
+
+  // sound play
+  Future<void> play_sound()async{
+    final player = AudioCache();
+    player.loadAsset("assets/audio/noti.wav");
+
+
   }
 }

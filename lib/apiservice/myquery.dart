@@ -56,5 +56,41 @@ query(\$id:Int!){
 }
 """;
 
+// active order detail
+static String activeorderdetail="""
+query{
+  orders_by_pk(id: 92) {
+    order_address {
+      location
+      latitude
+      longitude
+    }
+    pharmacy {
+      address {
+        latitude
+        longitude
+        location
+      }
+      logo_image {
+        url
+      }
+      name
+    }
+    user {
+      full_name
+      profile_image {
+        url
+      }
+      phone_number
+    }
+    id
+    delivery_fee
+    created_at
+    total_cost
+    order_code
+  }
+}
+""";
+
 
 }

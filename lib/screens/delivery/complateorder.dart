@@ -8,7 +8,8 @@ import 'package:hakime_delivery/widgets/cool_loading.dart';
 import '../../utils/constants.dart';
 
 class ComplateOrder extends StatelessWidget {
-  const ComplateOrder({super.key});
+   ComplateOrder({super.key});
+  var order_data=Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class ComplateOrder extends StatelessWidget {
                       borderRadius: BorderRadius.circular(40),
                       child: CachedNetworkImage(
                         imageUrl:
-                            "https://media.istockphoto.com/id/1325914526/fr/photo/les-pharmaciens-noirs-masculins-et-caucasiens-utilisent-la-tablette-num%C3%A9rique-parlent-de-la.webp?s=2048x2048&w=is&k=20&c=FmBTPcU0wCrUINPi85Ppt1CStgxLjIOlqUBjd8tEQto=",
+                            order_data["phimage"],
                         width: 45,
                         height: 45,
                         placeholder: (context, url) => Icon(
@@ -60,9 +61,9 @@ class ComplateOrder extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    title: const Text(
-                      "Roda pharmacy plc",
-                      style: TextStyle(),
+                    title:  Text(
+                      order_data["phname"],
+                      style:const TextStyle(),
                     ),
                     subtitle: Row(
                       children: [
@@ -74,9 +75,9 @@ class ComplateOrder extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Flexible(
+                         Flexible(
                           child: Text(
-                            "St.george church,fasile road Bahirdar",
+                            order_data["phloc"],
                           ),
                         ),
                       ],
@@ -93,15 +94,15 @@ class ComplateOrder extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: Row(
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           "Order date",
                           style: TextStyle(color: Colors.black54),
                         ),
-                        SizedBox(
+                       const SizedBox(
                           width: 10,
                         ),
-                        Text("2/3/2022")
+                        Text(order_data["date"].toString().substring(0,9))
                       ],
                     ),
                   ),
@@ -110,21 +111,22 @@ class ComplateOrder extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
+                      children:[
+                       const Text(
                           "Total",
                           style: TextStyle(color: Colors.black54),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        Text(" ETB 230")
+                        Text(" ETB ${order_data["dcost"] +order_data["tcost"]}")
                       ],
                     ),
                   )
                 ],
               ),
             ),
+
             // payment option
             Container(
               width: Get.width,
