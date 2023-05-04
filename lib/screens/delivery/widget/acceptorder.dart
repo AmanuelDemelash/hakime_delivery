@@ -36,6 +36,8 @@ class AcceptOrder extends StatelessWidget {
                   style: TextStyle(color: Colors.black54, fontSize: 15),
                 ),
                 actions: [
+                  IconButton(onPressed: () => Get.back(), icon:const Icon(Icons.cancel,color: Colors.red,)),
+                  SizedBox(width: 60,),
                   Mutation(
                       options: MutationOptions(
                         document: gql(Mymutation.acceptorder),
@@ -82,9 +84,10 @@ class AcceptOrder extends StatelessWidget {
                                   });
                                 },
                                 child: const Text(
-                                  "Okay Accept",
+                                  "Accept",
                                   style: TextStyle(
                                       color: Constants.primcolor,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ));
                       })
