@@ -102,7 +102,7 @@ class MyApp extends StatelessWidget {
         defaultTransition: Transition.leftToRight,
         title: Constants.app_name,
         theme: light,
-        initialRoute: "/splash",
+        initialRoute: "/changepassword",
         getPages: [
           GetPage(name: "/splash", page: () => Splash()),
           GetPage(name: "/login", page: () => Login()),
