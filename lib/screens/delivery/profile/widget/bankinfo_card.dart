@@ -87,7 +87,7 @@ class _bankinfo_cardState extends State<bankinfo_card> {
               width: 40,
               height: 30,
               decoration: const BoxDecoration(
-                  color: Constants.primcolor,
+                  color: Colors.orange,
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(10),
                       bottomLeft: Radius.circular(20))),

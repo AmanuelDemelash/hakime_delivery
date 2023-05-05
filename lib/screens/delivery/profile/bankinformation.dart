@@ -43,43 +43,62 @@ class Bankinformation extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {},
-        color: Constants.primcolor,
-        child: Padding(
-          padding: const EdgeInsets.only(top:25),
-          child:
-          Query(options: QueryOptions(document: gql(Myquery.bank_info),
-          variables: {
-            "id":Get.find<SplashController>().prefs.getInt("id")
-          },
-          pollInterval: const Duration(seconds: 10)
+      body: Stack(
+        children: [
+          Container(
+            width: Get.width,
+            height: 60,
+            color: Constants.primcolor,
           ),
+          Positioned(
 
-              builder:(result, {fetchMore, refetch}) {
-            if(result.hasException){
-              return const cool_loding();
-            }
-            if(result.isLoading){
-              return const cool_loding();
-            }
+            child: RefreshIndicator(
+            onRefresh: () async {},
+            color: Constants.primcolor,
+            child: Container(
+              width: Get.width,
+                padding: const EdgeInsets.all(15),
+                margin: const EdgeInsets.only(top:25),
+                decoration:const BoxDecoration(
+                  color: Constants.whitesmoke,
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20))
+                  
+                ),
+                child:
+                Query(options: QueryOptions(document: gql(Myquery.bank_info),
+                    variables: {
+                      "id":Get.find<SplashController>().prefs.getInt("id")
+                    },
+                    pollInterval: const Duration(seconds: 10)
+                ),
 
-            List bank=result.data!["bank_informations"];
-            return ListView.builder(
-              itemCount:bank.length,
-              itemBuilder: (context, index) {
-                return bankinfo_card(
-                  id:bank[index]["id"],
-                  name: bank[index]["full_name"],
-                  bname: bank[index]["bank_name"],
-                  acc: bank[index]["account_number"],
-                );
-              },
-            );
-              },)
+                  builder:(result, {fetchMore, refetch}) {
+                    if(result.hasException){
+                      return const cool_loding();
+                    }
+                    if(result.isLoading){
+                      return const cool_loding();
+                    }
 
-        ),
-      ),
+                    List bank=result.data!["bank_informations"];
+                    return ListView.builder(
+                      itemCount:bank.length,
+                      itemBuilder: (context, index) {
+                        return bankinfo_card(
+                          id:bank[index]["id"],
+                          name: bank[index]["full_name"],
+                          bname: bank[index]["bank_name"],
+                          acc: bank[index]["account_number"],
+                        );
+                      },
+                    );
+                  },)
+
+            ),
+          ), )
+        ],
+      )
+
     );
   }
 }
