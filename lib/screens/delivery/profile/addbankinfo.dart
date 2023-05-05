@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hakime_delivery/apiservice/mymutation.dart';
+import 'package:hakime_delivery/controllers/bankinfocontroller.dart';
+import 'package:hakime_delivery/controllers/splashcontroller.dart';
+import 'package:hakime_delivery/widgets/buttonspinner.dart';
 
 import '../../../utils/constants.dart';
 
@@ -11,6 +16,27 @@ class AddBankInformation extends StatelessWidget {
   TextEditingController bname = TextEditingController();
   TextEditingController holdername = TextEditingController();
   TextEditingController accountnum = TextEditingController();
+
+  customsnacke(String message) {
+    return Get.snackbar("Successful", message,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        maxWidth: Get.width,
+        snackStyle: SnackStyle.GROUNDED,
+        margin: const EdgeInsets.only(left: 0, right: 0, bottom: 0),
+        padding: const EdgeInsets.all(10));
+  }
+  customsnack(String message) {
+    return Get.snackbar("Error", message,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        maxWidth: Get.width,
+        snackStyle: SnackStyle.GROUNDED,
+        margin: const EdgeInsets.only(left: 0, right: 0, bottom: 0),
+        padding: const EdgeInsets.all(10));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +80,7 @@ class AddBankInformation extends StatelessWidget {
                 const SizedBox(
                   height: 25,
                 ),
+
                 Form(
                     key: _formkey,
                     child: Column(
@@ -68,8 +95,7 @@ class AddBankInformation extends StatelessWidget {
                                 keyboardType: TextInputType.text,
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                  } else {
-                                    return null;
+                                    customsnack("add bank name");
                                   }
                                   return null;
                                 },
@@ -140,10 +166,9 @@ class AddBankInformation extends StatelessWidget {
                           keyboardType: TextInputType.number,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              // customsnack("add account number");
-                            } else {
-                              return null;
+                              customsnack("add account number");
                             }
+                            return null;
                           },
                           decoration: const InputDecoration(
                               hintText: "Account number",
@@ -180,10 +205,9 @@ class AddBankInformation extends StatelessWidget {
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              //customsnack("add bank holder name");
-                            } else {
-                              return null;
+                              customsnack("add bank holder name");
                             }
+                            return null;
                           },
                           decoration: const InputDecoration(
                               hintText: "Account holder name",
@@ -215,20 +239,57 @@ class AddBankInformation extends StatelessWidget {
                           height: 30,
                         ),
                         // button
-                        SizedBox(
-                          width: Get.width,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(30),
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(17)),
-                                onPressed: () {
-                                  _formkey.currentState!.save();
+                        Mutation(options: MutationOptions(document: gql(Mymutation.insert_bankinfo),
+                        onCompleted: (data) {
+                          if(data!.isNotEmpty){
+                            Get.find<BankinfoController>().is_addbank.value=false;
+                            Get.back();
+                            customsnacke("bank info add successfully");
 
-                                },
-                                child: const Text("Save")),
-                          ),
-                        )
+                          }
+                          
+                        },
+                       onError: (error) => customsnack(error!.graphqlErrors.first.message),   
+                        ),
+                            builder: (runMutation, result) {
+                          if(result!.hasException){
+                            Get.find<BankinfoController>().is_addbank.value=false;
+                            print(result.exception.toString());
+                          }
+
+
+                          if(result!.isLoading){
+                            Get.find<BankinfoController>().is_addbank.value=true;
+
+                          }
+                          return SizedBox(
+                            width: Get.width,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.all(17)),
+                                  onPressed: () {
+                                    _formkey.currentState!.save();
+                                    if(bname.text.isNotEmpty || accountnum.text.isNotEmpty || bname.text.isNotEmpty){
+                                      // run mutation
+                                      runMutation({
+                                        "bank_name":bname.text,
+                                        "name":holdername.text,
+                                        "acc":accountnum.text,
+                                        "id":Get.find<SplashController>().prefs.getInt("id")
+                                      });
+
+                                    }else{
+                                      customsnack("please provide correct information");
+                                    }
+                                  },
+                                  child: Get.find<BankinfoController>().is_addbank.value==true? const ButtonSpinner():
+                                  const Text("Save")),
+                            ),
+                          );
+                            },)
+
                       ],
                     ))
               ],

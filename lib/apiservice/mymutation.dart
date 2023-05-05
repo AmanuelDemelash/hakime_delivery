@@ -41,4 +41,17 @@ class Mymutation {
 }
  
  """;
+
+ // inser bank account
+
+static String insert_bankinfo="""
+mutation(\$bank_name:String!,\$name:String!,\$acc:String!,\$id:Int!){
+  insert_bank_informations(objects: {bank_name:\$bank_name, full_name:\$name, account_number:\$acc, deliverer_id:\$id}) {
+    returning {
+      id
+    }
+  }
+}
+
+""";
 }

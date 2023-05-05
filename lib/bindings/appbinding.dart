@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hakime_delivery/controllers/notification_controller.dart';
 import 'package:hakime_delivery/controllers/orderconteroller.dart';
 
+import '../controllers/bankinfocontroller.dart';
 import '../controllers/connectivity.dart';
 import '../controllers/homepagecontroller.dart';
 import '../controllers/logincontroller.dart';
@@ -16,5 +17,6 @@ class AppBinding implements Bindings {
     Get.put(CheekConnecctivityController());
     Get.put(OrderController());
     Get.put(NotificationController());
+    Get.put(BankinfoController());
   }
 }
