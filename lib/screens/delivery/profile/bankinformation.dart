@@ -35,6 +35,7 @@ class Bankinformation extends StatelessWidget {
       
       floatingActionButton: FloatingActionButton(
         tooltip: "Add bank info",
+        backgroundColor: Constants.primcolor,
         onPressed: () async {
           Get.toNamed("/addbank");
         },

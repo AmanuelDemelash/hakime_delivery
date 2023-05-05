@@ -14,7 +14,6 @@ class Constants {
 
   // loading dialog
 
-
     customsnackerorr(String message) {
       return Get.snackbar("Error", message,
           snackPosition: SnackPosition.BOTTOM,

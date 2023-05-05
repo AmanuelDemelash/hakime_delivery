@@ -279,7 +279,9 @@ class AddBankInformation extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(30),
                                         child: ElevatedButton(
+
                                             style: ElevatedButton.styleFrom(
+                                              backgroundColor: Constants.primcolor,
                                                 padding: const EdgeInsets.all(17)),
                                             onPressed: () {
                                               _formkey.currentState!.save();
