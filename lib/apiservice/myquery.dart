@@ -118,5 +118,35 @@ query{
 }
 """;
 
+// bank info
+
+static String bank_info="""
+query(\$id:Int!){
+  bank_informations(where: {deliverer_id: {_eq:\$id}}) {
+    id
+    bank_name
+    full_name
+    account_number
+  }
+}
+
+
+""";
+
+// withdrawal
+
+static String withdrawal="""
+query(\$id:Int!){
+  withdrawals(where: {deliverer_id: {_eq:\$id}}) {
+    id
+    amount
+    status
+  }
+}
+
+
+
+""";
+
 
 }

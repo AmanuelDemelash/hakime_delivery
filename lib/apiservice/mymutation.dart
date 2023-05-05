@@ -54,4 +54,13 @@ mutation(\$bank_name:String!,\$name:String!,\$acc:String!,\$id:Int!){
 }
 
 """;
+
+static String delet_bankinfo="""
+mutation(\$id:Int!){
+  delete_bank_informations_by_pk(id:\$id) {
+    id
+  }
+}
+
+""";
 }

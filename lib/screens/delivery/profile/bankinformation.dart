@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hakime_delivery/apiservice/myquery.dart';
+import 'package:hakime_delivery/controllers/splashcontroller.dart';
+import 'package:hakime_delivery/widgets/cool_loading.dart';
 
 import '../../../utils/constants.dart';
 import 'widget/bankinfo_card.dart';
@@ -28,6 +32,7 @@ class Bankinformation extends StatelessWidget {
               color: Colors.white,
             )),
       ),
+      
       floatingActionButton: FloatingActionButton(
         tooltip: "Add bank info",
         onPressed: () async {
@@ -43,12 +48,36 @@ class Bankinformation extends StatelessWidget {
         color: Constants.primcolor,
         child: Padding(
           padding: const EdgeInsets.only(top:25),
-          child: ListView.builder(
-            itemCount: 3,
-            itemBuilder: (context, index) {
-              return bankinfo_card();
-            },
+          child:
+          Query(options: QueryOptions(document: gql(Myquery.bank_info),
+          variables: {
+            "id":Get.find<SplashController>().prefs.getInt("id")
+          },
+          pollInterval: const Duration(seconds: 10)
           ),
+
+              builder:(result, {fetchMore, refetch}) {
+            if(result.hasException){
+              return const cool_loding();
+            }
+            if(result.isLoading){
+              return const cool_loding();
+            }
+
+            List bank=result.data!["bank_informations"];
+            return ListView.builder(
+              itemCount:bank.length,
+              itemBuilder: (context, index) {
+                return bankinfo_card(
+                  id:bank[index]["id"],
+                  name: bank[index]["full_name"],
+                  bname: bank[index]["bank_name"],
+                  acc: bank[index]["account_number"],
+                );
+              },
+            );
+              },)
+
         ),
       ),
     );
