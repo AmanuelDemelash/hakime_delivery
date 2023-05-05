@@ -6,9 +6,11 @@ import '../widgets/cool_loading.dart';
 
 class Constants {
   static const String app_name = "Hakime Delivery";
-  static const Color primcolor = Color(0xfff065f46);
+  static const Color primcolor = Color(0xfff0e8388);
   static const Color whitesmoke = Color(0xffff4f4f4);
 
+
+  //0xfff065f46
 
   // loading dialog
 
