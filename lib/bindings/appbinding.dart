@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hakime_delivery/controllers/locationcontrollers.dart';
 import 'package:hakime_delivery/controllers/notification_controller.dart';
 import 'package:hakime_delivery/controllers/orderconteroller.dart';
 
@@ -18,5 +19,6 @@ class AppBinding implements Bindings {
     Get.put(OrderController());
     Get.put(NotificationController());
     Get.put(BankinfoController());
+    Get.put(Locationcontrollers());
   }
 }

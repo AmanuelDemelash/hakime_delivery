@@ -37,10 +37,14 @@ class Locationcontrollers extends GetxController {
         return;
       }
     }
-
     locationData = await location.getLocation();
     current_lat.value=locationData.latitude!;
     current_long.value=locationData.latitude!;
     update();
+    location.enableBackgroundMode(enable: true);
+    location.onLocationChanged.listen((event) {
+      current_lat.value=event.latitude!;
+      current_long.value=event.latitude!;
+    });
   }
 }

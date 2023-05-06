@@ -12,6 +12,8 @@ class Constants {
 
   //0xfff065f46
 
+  // map api
+  static const String mapapi = "AIzaSyBuJ_8xq4Di2929RJBdk0_yTHLArHycpAU";
   // loading dialog
 
     customsnackerorr(String message) {

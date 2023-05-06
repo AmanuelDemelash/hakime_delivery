@@ -84,8 +84,8 @@ query(\$id:Int!){
 
 // active order detail
 static String activeorderdetail="""
-query{
-  orders_by_pk(id: 92) {
+query(\$id:Int!){
+  orders_by_pk(id:\$id) {
     order_address {
       location
       latitude
