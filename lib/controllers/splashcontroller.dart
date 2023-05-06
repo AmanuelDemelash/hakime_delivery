@@ -8,6 +8,7 @@ class SplashController extends GetxController {
   //var token = null.obs;
   late final prefs;
 
+
   Future<void> gotonext() async {
     bool connec =
         Get.find<CheekConnecctivityController>().has_connecction.value;

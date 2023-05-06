@@ -88,7 +88,7 @@ class Login extends StatelessWidget {
                         decoration: InputDecoration(
                             hintText: "email",
                             filled: true,
-                            contentPadding: const EdgeInsets.all(15),
+                            contentPadding: const EdgeInsets.all(20),
                             prefixIcon: const Icon(Icons.email),
                             errorBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.red),
@@ -129,7 +129,7 @@ class Login extends StatelessWidget {
                               return null;
                             },
                             decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.all(15),
+                                contentPadding: const EdgeInsets.all(20),
                                 hintText: "password",
                                 filled: true,
                                 prefixIcon: const Icon(Icons.key_sharp),
@@ -230,6 +230,7 @@ class Login extends StatelessWidget {
 
                           return Container(
                               width: Get.width,
+                              height: 55,
                               margin:
                                   const EdgeInsets.only(left: 15, right: 15),
                               child: Obx(() => ClipRRect(

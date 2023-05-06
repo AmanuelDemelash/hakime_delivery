@@ -7,9 +7,9 @@ import '../../utils/constants.dart';
 class ChangePassword extends StatelessWidget {
   ChangePassword({Key? key}) : super(key: key);
 
-  var _formkwy = GlobalKey<FormState>();
-  TextEditingController _oldpassword = TextEditingController();
-  TextEditingController _newpassword = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
+  final TextEditingController _oldpassword = TextEditingController();
+  final TextEditingController _newpassword = TextEditingController();
 
   customsnack(String message) {
     return Get.snackbar("Error", message,
@@ -43,7 +43,7 @@ class ChangePassword extends StatelessWidget {
             )),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,9 +70,10 @@ class ChangePassword extends StatelessWidget {
               style: TextStyle(color: Colors.black54),
             ),
             const SizedBox(
-              height: 30,
+              height: 40,
             ),
             Form(
+              key: _formkey,
                 child: Column(
               children: [
                 // old password
@@ -89,7 +90,7 @@ class ChangePassword extends StatelessWidget {
                         return null;
                       },
                       decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(15),
+                          contentPadding: const EdgeInsets.all(20),
                           hintText: "old password",
                           filled: true,
                           prefixIcon: const Icon(Icons.key_sharp),
@@ -118,38 +119,40 @@ class ChangePassword extends StatelessWidget {
                               borderSide:
                                   BorderSide(color: Constants.whitesmoke),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
+                                  BorderRadius.all(Radius.circular(15))),
                           focusedBorder: const OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: Constants.primcolor),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
+                                  BorderRadius.all(Radius.circular(15))),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Constants.primcolor.withOpacity(0.2)),
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(30))),
+                                  const BorderRadius.all(Radius.circular(15))),
                           fillColor: Colors.white),
                     )),
                 const SizedBox(
-                  height: 10,
+                  height:20,
                 ),
                 // new password
                 Obx(() => TextFormField(
                       controller: _newpassword,
+
                       obscureText:
                           Get.find<LoginController>().password_visible.value,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return customsnack("please enter old  password");
+                          return customsnack("please enter new  password");
                         } else if (value.length < 6) {
                           return customsnack("Password length must be 6");
                         }
                         return null;
                       },
                       decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(15),
-                          hintText: "old password",
+                          contentPadding: const EdgeInsets.all(20),
+                          hintText: "new password",
+                          helperText: "password size must be 6",
                           filled: true,
                           prefixIcon: const Icon(Icons.key_sharp),
                           suffixIcon: IconButton(
@@ -177,20 +180,49 @@ class ChangePassword extends StatelessWidget {
                               borderSide:
                                   BorderSide(color: Constants.whitesmoke),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
+                                  BorderRadius.all(Radius.circular(15))),
                           focusedBorder: const OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: Constants.primcolor),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(30))),
+                                  BorderRadius.all(Radius.circular(15))),
                           enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Constants.primcolor.withOpacity(0.2)),
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(30))),
+                                  const BorderRadius.all(Radius.circular(15))),
                           fillColor: Colors.white),
                     )
                 ),
+                const SizedBox(height: 30,),
+
+                 // change password button
+                SizedBox(
+                  width: Get.width,
+                  height: 50,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding:const EdgeInsets.all(10)
+                      ),
+                     onPressed:() {
+                        _formkey.currentState!.save();
+                        if(_formkey.currentState!.validate()){
+
+                        }else{
+
+                        }
+
+                    }, child:const Text("Change password")),
+                  ),
+                ),
+                const SizedBox(height: 30,),
+                const Text(
+                  "Skip! i will change later",
+                  style: TextStyle( fontWeight: FontWeight.bold),
+                ),
+
               ],
             ))
           ],

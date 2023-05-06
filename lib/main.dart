@@ -23,13 +23,11 @@ import 'screens/onbording/splash.dart';
 import 'screens/setting.dart';
 import 'theme/light_theme.dart';
 
-late final prefs;
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initHiveForFlutter();
   // notification
-  prefs = await SharedPreferences.getInstance();
+
   AwesomeNotifications().initialize(
       //set the icon to null if you want to use the default app icon
       'resource://drawable/logo',
@@ -63,9 +61,15 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
+
+    Future<String?> gettoken()async{
+      var pref=await SharedPreferences.getInstance();
+      String? token=pref.getString("token");
+      return  token;
+    }
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     HttpLink httpLink = HttpLink("https://hakime-2.hasura.app/v1/graphql",
         defaultHeaders: {"x-hasura-admin-secret": "hakime"});
     final WebSocketLink websocketLink = WebSocketLink(
@@ -78,7 +82,7 @@ class MyApp extends StatelessWidget {
     final Link link = Link.split(
         (request) => request.isSubscription, websocketLink, httpLink);
 
-    var token = prefs.getString("token");
+    var token = gettoken();
     final AuthLink authLink = AuthLink(
       getToken: () async => 'Bearer <$token>',
     );
@@ -102,7 +106,7 @@ class MyApp extends StatelessWidget {
         defaultTransition: Transition.leftToRight,
         title: Constants.app_name,
         theme: light,
-        initialRoute: "/changepassword",
+        initialRoute:"/splash",
         getPages: [
           GetPage(name: "/splash", page: () => Splash()),
           GetPage(name: "/login", page: () => Login()),

@@ -37,7 +37,7 @@ class ForgotPassword extends StatelessWidget {
                 onPressed: () {
                   Get.back();
                 },
-                icon: const FaIcon(FontAwesomeIcons.arrowLeft),
+                icon: const FaIcon(FontAwesomeIcons.angleLeft),
               ),
               const SizedBox(
                 height: 30,
@@ -50,13 +50,10 @@ class ForgotPassword extends StatelessWidget {
                 height: 15,
               ),
               const Text(
-                "We need your registration email account",
+                "enter your email associated with your account and \n we will send an email with instruction to forgot your password",
                 style: TextStyle(color: Colors.black45),
               ),
-              const Text(
-                "to send your password reset code!",
-                style: TextStyle(color: Colors.black45),
-              ),
+
               const SizedBox(
                 height: 30,
               ),
