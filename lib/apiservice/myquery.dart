@@ -143,9 +143,6 @@ query(\$id:Int!){
     status
   }
 }
-
-
-
 """;
 
 

@@ -11,13 +11,14 @@ import 'package:hakime_delivery/utils/constants.dart';
 import 'package:hakime_delivery/widgets/cool_loading.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../widget/withdraw.dart';
+
 class Wallet extends StatelessWidget {
   const Wallet({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constants.primcolor,
       appBar: AppBar(
         backgroundColor: Constants.primcolor,
         elevation: 0,
@@ -44,128 +45,21 @@ class Wallet extends StatelessWidget {
                   }),
               builder: (result, {fetchMore, refetch}) {
                 if (result.hasException) {
-                  print(result.exception.toString());
+                  return const Center(child: cool_loding());
                 }
                 if (result.isLoading) {
-                  return Column(
-                    children: [
-                      Container(
-                        width: Get.width,
-                        height: 250,
-                        decoration: const BoxDecoration(
-                          color: Constants.primcolor,
-                        ),
-                        child:
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const CircularProgressIndicator(
-                              color: Constants.whitesmoke,
-                            ),
-                            // holder name
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        "Holder Name",
-                                        style: TextStyle(color: Colors.white54),
-                                      ),
-                                      Shimmer.fromColors(
-                                          baseColor: Colors.white,
-                                          highlightColor: Colors.grey,
-                                          child: const SizedBox(
-                                            width: 100,
-                                            height: 15,
-                                          )
-                                      ),
-                                    ],
-                                  ),
-                                ]),
-                            const SizedBox(
-                              height: 25,
-                            ),
-                            // deposit and withdraw button
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // deposit
-                                SizedBox(
-                                  height: 50,
-                                  width: 150,
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(30)),
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            elevation: 0,
-                                            backgroundColor: Colors.white),
-                                        onPressed: () {},
-                                        child: const Text("Deposit",
-                                            style:
-                                            TextStyle(color: Colors.black))),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                // cash out
-                                SizedBox(
-                                  height: 50,
-                                  width: 150,
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(30)),
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            elevation: 0,
-                                            backgroundColor:
-                                            Colors.black.withOpacity(0.4)),
-                                        onPressed: () {
+                  return const Center(child: cool_loding());
 
-                                        },
-                                        child: const Text("Withdraw",
-                                            style:
-                                            TextStyle(color: Colors.white))),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                Container(
-                width: Get.width,
-                height: Get.height-250,
-                decoration:const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30))
-                ),
-                )
-
-
-                    ],
-                  );
                 }
-
-                Map<String, dynamic> delveryWallet =
-                    result.data!["deliverers_by_pk"];
+                Map<String, dynamic> delveryWallet =result.data!["deliverers_by_pk"];
 
                 return Column(
                   children: [
                     Container(
                       width: Get.width,
-                      height: 250,
                       decoration: const BoxDecoration(
                         color: Constants.primcolor,
+                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30),bottomRight: Radius.circular(30))
                       ),
                       child:
                       Column(
@@ -174,7 +68,6 @@ class Wallet extends StatelessWidget {
                           const SizedBox(
                             height: 30,
                           ),
-
                           const SizedBox(
                             height: 10,
                           ),
@@ -194,13 +87,13 @@ class Wallet extends StatelessWidget {
                                       "Holder Name",
                                       style: TextStyle(color: Colors.white54),
                                     ),
-                                    delveryWallet["bank_info"] == null
-                                        ? const Text("")
-                                        : const Text(
-                                            "Amanuel demelash",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )
+                                    // delveryWallet["bank_info"] == null
+                                    //     ? const Text("")
+                                    //     : const Text(
+                                    //         "Amanuel demelash",
+                                    //         style:
+                                    //             TextStyle(color: Colors.white),
+                                    //       )
                                   ],
                                 ),
                               ]),
@@ -244,14 +137,13 @@ class Wallet extends StatelessWidget {
                                           backgroundColor:
                                               Colors.black.withOpacity(0.4)),
                                       onPressed: () {
-                                        delveryWallet["bank_info"] == null
-                                            ? Get.toNamed("/bankinformation")
-                                            : Get.bottomSheet(BottomSheet(
-                                                onClosing: () {},
-                                                builder: (context) {
-                                                  return Container();
-                                                },
-                                              ));
+                                        // delveryWallet["bank_info"] == null
+                                        //     ? Get.toNamed("/bankinformation")
+                                        //     :
+                                        Get.bottomSheet(
+                                            Withdraw()
+
+                                        );
                                       },
                                       child: const Text("Withdraw",
                                           style:
@@ -260,6 +152,9 @@ class Wallet extends StatelessWidget {
                               )
                             ],
                           ),
+                          const SizedBox(
+                            height:15,
+                          ),
                         ],
                       ),
                     ),
@@ -267,13 +162,9 @@ class Wallet extends StatelessWidget {
                       height: 20,
                     ),
                     // withdrawals pending
-                    Container(
+                    SizedBox(
                       width: Get.width,
-                      height: Get.height-250,
-                      decoration:const BoxDecoration(
-                          color: Colors.white,
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30))
-                      ),
+
                       child: Column(
                         children: [
                           Padding(
