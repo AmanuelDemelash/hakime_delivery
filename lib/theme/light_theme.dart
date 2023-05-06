@@ -6,6 +6,7 @@ ThemeData light = ThemeData(
   primaryColor: Constants.primcolor,
   secondaryHeaderColor: Constants.primcolor,
   brightness: Brightness.light,
+  useMaterial3: true,
   highlightColor: Colors.white,
   hintColor: const Color(0xFF9E9E9E),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
