@@ -171,7 +171,8 @@ class Login extends StatelessWidget {
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(30))),
                                 fillColor: Colors.white),
-                          )),
+                          )
+                      ),
                       const SizedBox(
                         height: 10,
                       ),
