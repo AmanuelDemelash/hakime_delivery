@@ -138,8 +138,9 @@ query(\$id:Int!){
 static String withdrawal="""
 query(\$id:Int!){
   withdrawals(where: {deliverer_id: {_eq:\$id}}) {
-    id
+     id
     amount
+    created_at
     status
   }
 }

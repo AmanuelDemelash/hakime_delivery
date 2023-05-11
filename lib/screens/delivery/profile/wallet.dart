@@ -5,11 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hakime_delivery/apiservice/myquery.dart';
-import 'package:hakime_delivery/controllers/bankinfocontroller.dart';
 import 'package:hakime_delivery/controllers/splashcontroller.dart';
 import 'package:hakime_delivery/utils/constants.dart';
 import 'package:hakime_delivery/widgets/cool_loading.dart';
-import 'package:shimmer/shimmer.dart';
+
 
 import '../widget/withdraw.dart';
 
@@ -45,7 +44,7 @@ class Wallet extends StatelessWidget {
                   }),
               builder: (result, {fetchMore, refetch}) {
                 if (result.hasException) {
-                  return const Center(child: cool_loding());
+                  print(result.exception.toString());
                 }
                 if (result.isLoading) {
                   return const Center(child: cool_loding());
@@ -66,7 +65,7 @@ class Wallet extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const SizedBox(
-                            height: 30,
+                            height: 20,
                           ),
                           const SizedBox(
                             height: 10,
@@ -115,7 +114,9 @@ class Wallet extends StatelessWidget {
                                       style: ElevatedButton.styleFrom(
                                           elevation: 0,
                                           backgroundColor: Colors.white),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Get.toNamed("/deposit");
+                                      },
                                       child: const Text("Deposit",
                                           style:
                                               TextStyle(color: Colors.black))),
@@ -141,8 +142,7 @@ class Wallet extends StatelessWidget {
                                         //     ? Get.toNamed("/bankinformation")
                                         //     :
                                         Get.bottomSheet(
-                                            Withdraw()
-
+                                            Withdraw(wallet:delveryWallet["wallet"] ,)
                                         );
                                       },
                                       child: const Text("Withdraw",
@@ -214,18 +214,21 @@ class Wallet extends StatelessWidget {
                                         Column(
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                          children: const [
+                                          children: [
                                             Text(
-                                              "2/3/2023",
-                                              style: TextStyle(color: Colors.black54),
+                                              withdraw[index]["created_at"].toString(),
+                                              style:const TextStyle(color: Colors.black54),
                                             ),
-                                            Text("400 ETB")
+                                            Text(withdraw[index]["amount"].toString())
                                           ],
                                         ),
-                                        const Text(
+                                       withdraw[index]["status"]=="pending" ?const Text(
                                           "pending",
                                           style: TextStyle(color: Colors.red),
-                                        )
+                                        ):const Text(
+                                         "Confirmed",
+                                         style: TextStyle(color: Colors.green),
+                                       )
                                       ],
                                     ),
                                   );

@@ -63,4 +63,16 @@ mutation(\$id:Int!){
 }
 
 """;
+
+static String withdraw="""
+ mutation(\$id:Int!,\$amount:Int!){
+  insert_withdrawals(objects: {deliverer_id:\$id, amount:\$amount}) {
+    returning {
+      id
+    }
+  }
+}
+
+
+""";
 }

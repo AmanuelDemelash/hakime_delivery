@@ -6,6 +6,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hakime_delivery/screens/auth/changepassword.dart';
 import 'package:hakime_delivery/screens/delivery/activeorderdetail.dart';
 import 'package:hakime_delivery/screens/delivery/complateorder.dart';
+import 'package:hakime_delivery/screens/delivery/deposite.dart';
 import 'package:hakime_delivery/screens/delivery/profile/bankinformation.dart';
 import 'package:hakime_delivery/screens/delivery/profile/wallet.dart';
 import 'package:hakime_delivery/screens/delivery/profile/addbankinfo.dart';
@@ -121,6 +122,7 @@ class MyApp extends StatelessWidget {
           GetPage(name: "/bankinformation", page: () => Bankinformation()),
           GetPage(name: "/addbank", page: () => AddBankInformation()),
           GetPage(name: "/changepassword", page: () => ChangePassword()),
+          GetPage(name: "/deposit", page: () => Deposit()),
 
           // both screen
           GetPage(name: "/setting", page: () => Setting()),
