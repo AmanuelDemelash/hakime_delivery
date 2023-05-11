@@ -33,7 +33,7 @@ class ActiveOrderDetail extends StatelessWidget {
         ),
         leading: IconButton(
             onPressed: () => Get.back(),
-            icon: const FaIcon(FontAwesomeIcons.angleLeft)),
+            icon: const FaIcon(FontAwesomeIcons.angleLeft,color: Colors.white,)),
       ),
       body: SafeArea(
           child: Query(
@@ -217,17 +217,18 @@ class ActiveOrderDetail extends StatelessWidget {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: ElevatedButton.icon(
-                                      icon: const Icon(Icons.phone),
+                                      icon: const Icon(Icons.phone,color: Colors.white,),
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Constants.primcolor
                                               .withOpacity(0.8),
+
                                           elevation: 0,
                                           padding: const EdgeInsets.all(15)),
                                       onPressed: () async {
                                         launch(
                                             "tel://${oreder["user"]["phone_number"]}");
                                       },
-                                      label: const Text("Call"),
+                                      label: const Text("Call",style: TextStyle(color: Colors.white),),
                                     ),
                                   ),
                                 ),
@@ -242,7 +243,7 @@ class ActiveOrderDetail extends StatelessWidget {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: ElevatedButton.icon(
-                                      icon: const Icon(Icons.check_circle),
+                                      icon: const Icon(Icons.check_circle,color: Colors.white,),
                                       style: ElevatedButton.styleFrom(
                                           elevation: 0,
                                           backgroundColor: Colors.red,
@@ -261,7 +262,7 @@ class ActiveOrderDetail extends StatelessWidget {
                                           "code": oreder["order_code"]
                                         });
                                       },
-                                      label: const Text("Delivered"),
+                                      label: const Text("Delivered",style: TextStyle(color: Colors.white),),
                                     ),
                                   ),
                                 ),
