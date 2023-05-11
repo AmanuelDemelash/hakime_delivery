@@ -313,7 +313,7 @@ class AddBankInformation extends StatelessWidget {
                                                     .value ==
                                                 true
                                             ? const ButtonSpinner()
-                                            : const Text("Save")),
+                                            : const Text("Save",style: TextStyle(color: Colors.white),)),
                                   ),
                                 );
                               },
