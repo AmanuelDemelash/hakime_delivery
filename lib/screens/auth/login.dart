@@ -197,7 +197,7 @@ class Login extends StatelessWidget {
                           document: gql(Mymutation.login),
                           onError: (error) {
                             Get.find<LoginController>().is_loging.value = false;
-                            customsnack(error!.graphqlErrors.first.message);
+                            customsnack(error!.graphqlErrors.first.message.toString());
                           },
                           onCompleted: (data) {
                             if (data != null) {
@@ -210,12 +210,11 @@ class Login extends StatelessWidget {
                               Get.find<LoginController>().is_loging.value =
                                   false;
 
-                              // if(data["delivererlogin"]["is_change"]==false){
-                              //   Get.toNamed("/changepassword");
-                              // }else{
-                              //   Get.offAllNamed("/mainhomepage");
-                              // }
-                              Get.offAllNamed("/mainhomepage");
+                              if(data["delivererlogin"]["is_password_changed"]==false){
+                                Get.toNamed("/changepassword");
+                              }else{
+                                Get.offAllNamed("/mainhomepage");
+                              }
 
                             } else {}
                           },
@@ -263,7 +262,7 @@ class Login extends StatelessWidget {
                                                 .value
                                             ? const ButtonSpinner()
                                             : const Text(
-                                                "Login",
+                                                "Login", style: TextStyle(color: Colors.white),
                                               )),
                                   )));
                         },

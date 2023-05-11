@@ -5,6 +5,7 @@ class Mymutation {
   delivererlogin(email:\$email, password:\$password) {
     id
     token
+    is_password_changed
   }
 }
   """;
@@ -74,5 +75,13 @@ static String withdraw="""
 }
 
 
+""";
+
+static String change_password="""
+mutation(\$id:Int!,\$old:String!,\$new:String!){
+  changePassword(deliverer_id:\$id, old_password:\$old, new_password:\$new) {
+    id
+  }
+}
 """;
 }
