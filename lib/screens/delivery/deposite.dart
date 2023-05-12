@@ -134,7 +134,10 @@ class Deposit extends StatelessWidget {
 
                  const SizedBox(width: 20,),
                ]),
-              ExpansionTile(title:const Image(image: AssetImage("assets/images/chapa.png"),width: 70,),
+              ExpansionTile(
+                title:const Image(image: AssetImage("assets/images/chapa.png"),
+                height:40,
+                width:10,),
 
               subtitle:const Text("deposit through chapa"),
               textColor: Constants.primcolor,

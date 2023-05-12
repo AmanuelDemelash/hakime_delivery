@@ -112,18 +112,32 @@ class Myprofile extends StatelessWidget {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Container(
-                                  width:110,
-                                height:110,
-                                decoration: const BoxDecoration(
-                                color: Constants.primcolor,
-                                shape: BoxShape.circle
-                                ),
-                                  child: CircleAvatar(
-                                      radius: 60,
-                                      backgroundImage: NetworkImage(
-                                          delivery["image"]["url"])),
-                                ),
+                                Stack(
+                                  children: [
+                                    Container(
+                                      width:120,
+                                      height:120,
+
+                                      decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle
+                                      ),
+
+                                    ),
+
+                                    Positioned(
+                                      top:10,
+                                      left:10,
+                                      right:10,
+                                      bottom:10,
+                                      child: CircleAvatar(
+                                          radius: 70,
+                                          backgroundImage: NetworkImage(
+                                              delivery["image"]["url"])),
+                                    ),
+                                  ],
+                                )
+                                ,
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -141,12 +155,10 @@ class Myprofile extends StatelessWidget {
                             );
                           }),
                     ),
-
                     const SizedBox(
                       height:10,
                     ),
                     //edit account
-
                        ListTile(
                          onTap: () => Get.toNamed("/editprofile"),
                          leading: const Icon(Icons.person),
@@ -164,8 +176,6 @@ class Myprofile extends StatelessWidget {
                          leading: const FaIcon(FontAwesomeIcons.bank),
                          title: const Text("Bank information"),
                        ),
-
-
                     //nptification
                     ListTile(
                       onTap: () {
