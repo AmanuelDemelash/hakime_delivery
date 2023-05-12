@@ -443,40 +443,65 @@ class Dashbord extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  width: Get.width,
-                                  padding: const EdgeInsets.all(20),
-                                  margin: const EdgeInsets.only(bottom: 10),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Row(
-                                    mainAxisAlignment:
+                            Query(
+                              options: QueryOptions(
+                                  document: gql(Myquery.withdrawal),
+                                  variables: {
+                                    "id":
+                                    Get.find<SplashController>().prefs.getInt("id")
+                                  }),
+                              builder: (result, {fetchMore, refetch}) {
+                                if (result.isLoading) {
+                                  return const cool_loding();
+                                }
+                                List withdraw = result.data!["withdrawals"];
+                                if (withdraw.isEmpty) {
+                                  return const Center(
+                                    child: Text(
+                                      "No withdrawals yet!",
+                                      style: TextStyle(color: Colors.black54),
+                                    ),
+                                  );
+                                }
+                                return ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: withdraw.length,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      width: Get.width,
+                                      padding: const EdgeInsets.all(20),
+                                      margin: const EdgeInsets.only(
+                                          left: 10, right: 10, bottom: 10),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10)),
+                                      child: Row(
+                                        mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        children: const [
-                                          Text(
-                                            "2/3/2023",
-                                            style: TextStyle(
-                                                color: Colors.black54),
+                                            children: [
+                                              Text(
+                                                withdraw[index]["created_at"].toString(),
+                                                style:const TextStyle(color: Colors.black54),
+                                              ),
+                                              Text(withdraw[index]["amount"].toString())
+                                            ],
                                           ),
-                                          Text("400 ETB")
+                                          withdraw[index]["status"]=="pending" ?const Text(
+                                            "pending",
+                                            style: TextStyle(color: Colors.red),
+                                          ):const Text(
+                                            "Confirmed",
+                                            style: TextStyle(color: Colors.green),
+                                          )
                                         ],
                                       ),
-                                      const Text(
-                                        "pending",
-                                        style: TextStyle(color: Colors.red),
-                                      )
-                                    ],
-                                  ),
+                                    );
+                                  },
                                 );
                               },
                             )
