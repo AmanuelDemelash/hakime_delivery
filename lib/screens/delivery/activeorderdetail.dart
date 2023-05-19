@@ -57,68 +57,66 @@ class ActiveOrderDetail extends StatelessWidget {
                       width: Get.width,
                       height: Get.height,
                     ),
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 30,
-                      child: Obx(() {
-                        return GoogleMap(
-                          mapType: MapType.normal,
-                          myLocationEnabled: true,
-                          initialCameraPosition: CameraPosition(
-                            target: LatLng(
-                                Get.find<Locationcontrollers>()
-                                    .current_lat
-                                    .value,
-                                Get.find<Locationcontrollers>()
-                                    .current_long
-                                    .value),
-                            zoom: 17.4746,
-                          ),
-                          myLocationButtonEnabled: true,
-                          markers: {
-                            Marker(
-                              markerId: const MarkerId("ph"),
-                              position: LatLng(
-                                  oreder["pharmacy"]["address"]["latitude"],
-                                  oreder["pharmacy"]["address"]["longitude"]),
-                              icon: Get.find<OrderController>().pharm_marker,
+                      SizedBox(
+                        height: Get.height/1.3,
+                        child: Obx(() {
+                          return GoogleMap(
+                            mapType: MapType.normal,
+                            myLocationEnabled: true,
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(
+                                  Get.find<Locationcontrollers>()
+                                      .current_lat
+                                      .value,
+                                  Get.find<Locationcontrollers>()
+                                      .current_long
+                                      .value),
+                              zoom: 17.4746,
                             ),
-                            Marker(
-                                markerId: const MarkerId("user"),
+                            myLocationButtonEnabled: true,
+                            markers: {
+                              Marker(
+                                markerId: const MarkerId("ph"),
                                 position: LatLng(
-                                    oreder["order_address"]["latitude"],
-                                    oreder["order_address"]["longitude"]),
-                                icon: Get.find<OrderController>().user_marker),
-                            Marker(
-                                markerId: const MarkerId("delvery"),
-                                position: LatLng(
-                                    Get.find<Locationcontrollers>()
-                                        .current_lat
-                                        .value,
-                                    Get.find<Locationcontrollers>()
-                                        .current_long
-                                        .value),
-                                icon:
-                                    Get.find<OrderController>().delivery_marker)
-                          },
-                          polylines: {
-                            Polyline(
-                                polylineId: const PolylineId("rout"),
-                                color: Constants.primcolor,
-                                width: 7,
-                                points: Get.find<OrderController>()
-                                    .polylinecordinates
-                                    .value)
-                          },
-                          onMapCreated: (GoogleMapController controller) {
-                            _controller.complete(controller);
-                            Get.find<OrderController>().getpolyline(oreder);
-                          },
-                        );
-                      }),
-                    ),
+                                    oreder["pharmacy"]["address"]["latitude"],
+                                    oreder["pharmacy"]["address"]["longitude"]),
+                                icon: Get.find<OrderController>().pharm_marker,
+                              ),
+                              Marker(
+                                  markerId: const MarkerId("user"),
+                                  position: LatLng(
+                                      oreder["order_address"]["latitude"],
+                                      oreder["order_address"]["longitude"]),
+                                  icon: Get.find<OrderController>().user_marker),
+                              Marker(
+                                  markerId: const MarkerId("delvery"),
+                                  position: LatLng(
+                                      Get.find<Locationcontrollers>()
+                                          .current_lat
+                                          .value,
+                                      Get.find<Locationcontrollers>()
+                                          .current_long
+                                          .value),
+                                  icon:
+                                      Get.find<OrderController>().delivery_marker)
+                            },
+                            polylines: {
+                              Polyline(
+                                  polylineId: const PolylineId("rout"),
+                                  color: Constants.primcolor,
+                                  width: 7,
+                                  points: Get.find<OrderController>()
+                                      .polylinecordinates
+                                      .value)
+                            },
+                            onMapCreated: (GoogleMapController controller) {
+                              _controller.complete(controller);
+                              Get.find<OrderController>().getpolyline(oreder);
+                            },
+                          );
+                        }),
+                      ),
+
                     // face problem
                     Positioned(
                       top: 0,
@@ -269,7 +267,8 @@ class ActiveOrderDetail extends StatelessWidget {
                               )
                             ],
                           ),
-                        ))
+                        )
+                    )
                   ],
                 );
               })),

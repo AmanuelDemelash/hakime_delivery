@@ -61,12 +61,12 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-
     Future<String?> gettoken()async{
       var pref=await SharedPreferences.getInstance();
       String? token=pref.getString("token");
       return  token;
     }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context){
