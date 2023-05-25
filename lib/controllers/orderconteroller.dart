@@ -1,23 +1,18 @@
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import '../utils/constants.dart';
-import 'locationcontrollers.dart';
+
 
 class OrderController extends GetxController{
   var is_accepting=false.obs;
-
-
 
   // complet order
 
   var is_correct_code=false.obs;
   var is_completing=false.obs;
-
 
   // active order
   @override
@@ -40,7 +35,6 @@ class OrderController extends GetxController{
         Constants.mapapi,
         PointLatLng(order["pharmacy"]["address"]["latitude"],order["pharmacy"]["address"]["longitude"]),
         PointLatLng(order["order_address"]["latitude"],order["order_address"]["longitude"]));
-
     if (result.points.isNotEmpty) {
       for (var point in result.points) {
         polylinecordinates.value.add(LatLng(point.latitude, point.longitude));
@@ -63,7 +57,5 @@ class OrderController extends GetxController{
         .then((value) => delivery_marker = value);
 
   }
-
-
 
 }
