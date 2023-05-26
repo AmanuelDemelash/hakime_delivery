@@ -37,7 +37,7 @@ class AcceptOrder extends StatelessWidget {
                 ),
                 actions: [
                   IconButton(onPressed: () => Get.back(), icon:const Icon(Icons.cancel,color: Colors.red,)),
-                  SizedBox(width: 60,),
+                  const SizedBox(width: 60,),
                   Mutation(
                       options: MutationOptions(
                         document: gql(Mymutation.acceptorder),

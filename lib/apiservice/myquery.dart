@@ -78,6 +78,31 @@ query(\$id:Int!){
     created_at
   }
 }
+  """;
+
+  // completed
+
+  static String completedOrder="""
+  Query(\$id:Int!){
+  orders(where: {deliverer_id: {_eq:\$id}, status: {_eq: delivered}}, order_by: {created_at: desc}) {
+    id
+    distance
+    order_address {
+      location
+    }
+    pharmacy {
+      name
+      logo_image {
+        url
+      }
+      address {
+        location
+      }
+    }
+    delivery_fee
+    created_at
+  }
+}
 
   
   """;
