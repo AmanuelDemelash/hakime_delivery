@@ -93,7 +93,7 @@ class AcceptOrder extends StatelessWidget {
                       })
                 ]);
           },
-          child: const Text("Accept")),
+          child: const Text("Accept",style: TextStyle(color: Colors.white),)),
     );
   }
 }
