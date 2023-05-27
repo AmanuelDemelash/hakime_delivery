@@ -50,15 +50,10 @@ class ActiveOrderDetail extends StatelessWidget {
                   );
                 }
                 Map<String, dynamic> oreder = result.data!["orders_by_pk"];
-
                 return Stack(
                   children: [
-                    SizedBox(
-                      width: Get.width,
-                      height: Get.height,
-                    ),
                       SizedBox(
-                        height: Get.height/1.3,
+                        height: Get.height,
                         child: Obx(() {
                           return GoogleMap(
                             mapType: MapType.normal,
@@ -116,7 +111,6 @@ class ActiveOrderDetail extends StatelessWidget {
                           );
                         }),
                       ),
-
                     // face problem
                     Positioned(
                       top: 0,
