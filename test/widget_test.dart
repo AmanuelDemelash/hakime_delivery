@@ -5,11 +5,21 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:hakime_delivery/main.dart';
+import 'package:get/get.dart';
+import 'package:hakime_delivery/bindings/appbinding.dart';
+import 'package:hakime_delivery/controllers/splashcontroller.dart';
+import 'package:hakime_delivery/screens/delivery/dashbord.dart';
 
 void main() {
-
+  Get.put(SplashController());
+  testWidgets("test home", (widgetTester)async{
+   await widgetTester.pumpWidget(
+      GetMaterialApp(
+          initialBinding: AppBinding(),
+          home: Dashbord())
+    );
+   var ui=find.text("welcome");
+   expect(ui, findsOneWidget);
+  });
 }

@@ -30,6 +30,8 @@ class Myprofile extends StatelessWidget {
                         bottomRight: Radius.circular(20),
                         bottomLeft: Radius.circular(20))),
               ),
+
+
               Positioned(
                 top: 50,
                 right: 0,

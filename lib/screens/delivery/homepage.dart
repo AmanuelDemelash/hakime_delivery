@@ -9,7 +9,6 @@ import 'package:hakime_delivery/apiservice/subscriptions.dart';
 import 'package:hakime_delivery/controllers/splashcontroller.dart';
 import 'package:hakime_delivery/screens/delivery/widget/acceptorder.dart';
 import 'package:hakime_delivery/widgets/cool_loading.dart';
-
 import '../../controllers/notification_controller.dart';
 import '../../utils/constants.dart';
 
@@ -83,7 +82,7 @@ class Homepage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
                             cool_loding(),
-                            Text("Today's order request")
+                            Text("order request at this time ")
                           ],
                         );
                       }
@@ -106,7 +105,8 @@ class Homepage extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(15)),
-                                  child: Column(
+                                  child:
+                                  Column(
                                     crossAxisAlignment: CrossAxisAlignment
                                         .start,
                                     children: [
