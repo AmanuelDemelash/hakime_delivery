@@ -35,7 +35,8 @@ class Homepage extends StatelessWidget {
                 icon: const FaIcon(
                   FontAwesomeIcons.bell,
                   color: Colors.black,
-                ))
+                )
+            )
           ],
           bottom: const TabBar(
               unselectedLabelColor: Colors.black54,

@@ -8,6 +8,7 @@ import 'package:hakime_delivery/screens/delivery/activeorderdetail.dart';
 import 'package:hakime_delivery/screens/delivery/complateorder.dart';
 import 'package:hakime_delivery/screens/delivery/deposite.dart';
 import 'package:hakime_delivery/screens/delivery/profile/bankinformation.dart';
+import 'package:hakime_delivery/screens/delivery/profile/editaccount.dart';
 import 'package:hakime_delivery/screens/delivery/profile/wallet.dart';
 import 'package:hakime_delivery/screens/delivery/profile/addbankinfo.dart';
 import 'package:hakime_delivery/translations/apptranslations.dart';
@@ -122,6 +123,7 @@ class MyApp extends StatelessWidget {
           GetPage(name: "/addbank", page: () => AddBankInformation()),
           GetPage(name: "/changepassword", page: () => ChangePassword()),
           GetPage(name: "/deposit", page: () => Deposit()),
+          GetPage(name: "/editprofile", page: () => EditAccount()),
 
           // both screen
           GetPage(name: "/setting", page: () => Setting()),
