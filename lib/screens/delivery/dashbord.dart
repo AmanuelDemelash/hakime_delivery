@@ -485,10 +485,10 @@ class Dashbord extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                withdraw[index]["created_at"].toString(),
+                                                withdraw[index]["created_at"].toString().substring(0,10),
                                                 style:const TextStyle(color: Colors.black54),
                                               ),
-                                              Text(withdraw[index]["amount"].toString())
+                                              Text("${withdraw[index]["amount"]} ETB")
                                             ],
                                           ),
                                           withdraw[index]["status"]=="pending" ?const Text(

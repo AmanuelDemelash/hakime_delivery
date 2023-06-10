@@ -403,7 +403,142 @@ class Homepage extends StatelessWidget {
 
           ),
           //completed
-          Container()
+          Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child:
+              Query(options: QueryOptions(document: gql(Myquery.compOrder),
+                  variables: {
+                    "id": Get
+                        .find<SplashController>()
+                        .prefs
+                        .getInt("id")
+                  }
+              ),
+                builder: (result, {fetchMore, refetch}) {
+                  if (result.hasException) {
+                    print(result.exception.toString());
+                   // return const Center(child: cool_loding(),);
+                  }
+                  if (result.isLoading) {
+                    return const Center(child: cool_loding(),);
+                  }
+                  List? orders = result.data!["orders"];
+                  if (orders!.isEmpty) {
+                    return const Center(child: Text("no completed order found!"));
+                  }
+
+                  return RefreshIndicator(
+                    color: Constants.primcolor,
+                    onRefresh: () async {},
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: orders.length,
+                      itemBuilder: (context, index) {
+                        return AnimationConfiguration.staggeredList(
+                          position: index,
+                          child: ScaleAnimation(
+                            child: FadeInAnimation(
+                              child: Container(
+                                width: Get.width,
+                                margin: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Pharmacy address",
+                                      style: TextStyle(color: Colors.black54),
+                                    ),
+                                    ListTile(
+                                      leading: ClipRRect(
+                                        borderRadius: BorderRadius.circular(40),
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                          orders[index]["pharmacy"]["logo_image"]["url"],
+                                          width: 40,
+                                          height: 40,
+                                          placeholder: (context, url) =>
+                                              Icon(
+                                                Icons.image,
+                                                color:
+                                                Constants.primcolor.withOpacity(
+                                                    0.5),
+                                              ),
+                                          errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      title: Text(
+                                        orders[index]["pharmacy"]["name"],
+                                        style: const TextStyle(),
+                                      ),
+                                      subtitle: Text(
+                                        orders[index]["pharmacy"]["address"]["location"],
+                                      ),
+                                    ),
+                                    const Text(
+                                      "User address",
+                                      style: TextStyle(color: Colors.black54),
+                                    ),
+                                    ListTile(
+                                      leading: const FaIcon(
+                                        FontAwesomeIcons.locationDot,
+                                        color: Constants.primcolor,
+                                      ),
+                                      title: Text(
+                                        orders[index]["order_address"]["location"],
+                                        style: const TextStyle(
+                                            color: Colors.black54),
+                                      ),
+                                    ),
+                                    const Divider(),
+                                    const SizedBox(
+                                      height: 3,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Approx: ${orders[index]["distance"]} Km",
+                                          style: const TextStyle(
+                                              color: Colors.black54),
+                                        ),
+
+                                          Container(
+                                              width: 50,
+                                              height: 50,
+                                              decoration: const BoxDecoration(
+                                                  color: Constants.primcolor,
+                                                  shape: BoxShape.circle),
+                                              child: const Center(
+                                                child: FaIcon(
+                                                  FontAwesomeIcons.angleRight,
+                                                  color: Colors.white,
+                                                ),
+                                              )),
+
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      width: 6,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },)
+
+          ),
         ]),
       ),
     );

@@ -52,7 +52,7 @@ class ActiveOrderDetail extends StatelessWidget {
                 Map<String, dynamic> oreder = result.data!["orders_by_pk"];
                 return Stack(
                   children: [
-                    Container(
+                    SizedBox(
                       width: Get.width,
                       height: Get.height,
                     ),
@@ -107,7 +107,8 @@ class ActiveOrderDetail extends StatelessWidget {
                                     points: Get.find<OrderController>()
                                         .polylinecordinates
                                         .value)
-                              },
+                              }
+                              ,
                               onMapCreated: (GoogleMapController controller) {
                                 _controller.complete(controller);
                                 Get.find<OrderController>().getpolyline(oreder);
