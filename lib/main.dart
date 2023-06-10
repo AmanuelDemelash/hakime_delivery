@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
 
     var token = gettoken();
     final AuthLink authLink = AuthLink(
-      getToken: () async => 'Bearer <$token>',
+      getToken: () async => 'Bearer <$gettoken()>',
     );
     final Link main_link = authLink.concat(link);
 
